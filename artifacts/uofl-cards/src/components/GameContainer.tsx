@@ -222,9 +222,7 @@ export function GameContainer() {
       {/* Header */}
       <header className="py-4 px-6 border-b border-white/10 bg-black/50 backdrop-blur-md sticky top-0 z-50 flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-cardinal rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(173,0,0,0.8)] overflow-hidden">
-            <img src="/cardinal-logo.png" alt="Cardinals" className="w-7 h-7 object-contain" />
-          </div>
+          <img src="/cardinal-logo.png" alt="Cardinals" className="w-9 h-9 object-contain" />
           <h1 className="font-black text-xl tracking-tighter uppercase text-white">
             UofL <span className="text-cardinal">Cards</span>
           </h1>
