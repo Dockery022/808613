@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "UofL Cards: Go Undefeated"
+version = "1.0.0"
+id = "artifacts/uofl-cards"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19418
+
+[services.development]
+run = "pnpm --filter @workspace/uofl-cards run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/uofl-cards", "run", "build" ]
+publicDir = "artifacts/uofl-cards/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19418"
+BASE_PATH = "/"
