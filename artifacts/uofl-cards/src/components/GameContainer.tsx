@@ -1,7 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   GamePhase,
-  POSITIONS,
   getRandomEra,
   getPlayersForEra,
   simulateSeason,
@@ -13,11 +12,11 @@ import { PlayerCard } from "@/components/PlayerCard";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
-import { RotateCcw, Share, Play, Search } from "lucide-react";
+import { RotateCcw, Share, Play, Search, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
 
 type PosFilter = "All" | "G" | "F" | "C";
+type SortKey = "ppg" | "rpg" | "apg" | "spg" | "bpg" | "rating";
 
 const POS_FILTER_MAP: Record<PosFilter, Position[]> = {
   All: ["PG", "SG", "SF", "PF", "C"],
@@ -25,6 +24,108 @@ const POS_FILTER_MAP: Record<PosFilter, Position[]> = {
   F: ["SF", "PF"],
   C: ["C"],
 };
+
+const STAT_COLS: { key: SortKey; label: string }[] = [
+  { key: "ppg", label: "PPG" },
+  { key: "rpg", label: "RPG" },
+  { key: "apg", label: "APG" },
+  { key: "spg", label: "SPG" },
+  { key: "bpg", label: "BPG" },
+];
+
+// Court slot positions as % of court container (left%, top%)
+const COURT_SLOTS: Record<Position, { left: string; top: string }> = {
+  C:  { left: "38%", top: "14%" },
+  PF: { left: "62%", top: "14%" },
+  SF: { left: "10%", top: "48%" },
+  SG: { left: "72%", top: "48%" },
+  PG: { left: "42%", top: "72%" },
+};
+
+function CourtDiagram({ roster }: { roster: Player[] }) {
+  const filled: Record<string, Player> = {};
+  roster.forEach(p => { filled[p.position] = p; });
+
+  return (
+    <div className="relative w-full h-full select-none">
+      {/* Court SVG */}
+      <svg
+        viewBox="0 0 400 520"
+        className="absolute inset-0 w-full h-full"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {/* Court floor */}
+        <rect width="400" height="520" rx="8" fill="#0d1520" />
+
+        {/* Outer boundary */}
+        <rect x="10" y="10" width="380" height="500" rx="6" stroke="#1e3a5f" strokeWidth="1.5" />
+
+        {/* Paint / key */}
+        <rect x="130" y="10" width="140" height="180" stroke="#1e3a5f" strokeWidth="1.5" />
+
+        {/* Free throw circle */}
+        <circle cx="200" cy="190" r="60" stroke="#1e3a5f" strokeWidth="1.5" />
+
+        {/* Free throw line */}
+        <line x1="130" y1="190" x2="270" y2="190" stroke="#1e3a5f" strokeWidth="1.5" />
+
+        {/* Basket backboard */}
+        <line x1="160" y1="28" x2="240" y2="28" stroke="#1e3a5f" strokeWidth="2" />
+
+        {/* Basket circle */}
+        <circle cx="200" cy="38" r="14" stroke="#1e3a5f" strokeWidth="1.5" />
+
+        {/* Three-point arc */}
+        <path
+          d="M 40 10 Q 40 340 200 340 Q 360 340 360 10"
+          stroke="#1e3a5f"
+          strokeWidth="1.5"
+        />
+
+        {/* Center court line */}
+        <line x1="10" y1="430" x2="390" y2="430" stroke="#1e3a5f" strokeWidth="1" strokeDasharray="6 4" />
+
+        {/* Center circle */}
+        <circle cx="200" cy="470" r="50" stroke="#1e3a5f" strokeWidth="1.5" />
+      </svg>
+
+      {/* Position slots overlaid on court */}
+      {(Object.entries(COURT_SLOTS) as [Position, { left: string; top: string }][]).map(([pos, coords]) => {
+        const player = filled[pos];
+        return (
+          <motion.div
+            key={pos}
+            style={{ left: coords.left, top: coords.top, transform: "translate(-50%, -50%)" }}
+            className="absolute"
+            initial={false}
+            animate={player ? { scale: 1 } : { scale: 1 }}
+          >
+            {player ? (
+              <motion.div
+                initial={{ scale: 0.7, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="flex flex-col items-center gap-1"
+              >
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-cardinal border-2 border-cardinal shadow-[0_0_20px_rgba(173,0,0,0.5)] flex flex-col items-center justify-center">
+                  <span className="text-[10px] font-black text-white/60 uppercase tracking-wider">{pos}</span>
+                  <span className="text-sm md:text-base font-black text-white leading-tight text-center px-1 line-clamp-2">
+                    {player.name.split(" ").slice(-1)[0]}
+                  </span>
+                </div>
+                <span className="text-[9px] text-white/50 font-bold uppercase tracking-wider">{player.era}</span>
+              </motion.div>
+            ) : (
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl border-2 border-dashed border-white/20 flex flex-col items-center justify-center bg-white/3">
+                <span className="text-white/40 font-black text-base md:text-lg">{pos}</span>
+              </div>
+            )}
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
 
 export function GameContainer() {
   const [phase, setPhase] = useState<GamePhase>("mode-select");
@@ -37,14 +138,13 @@ export function GameContainer() {
 
   const [posFilter, setPosFilter] = useState<PosFilter>("All");
   const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState<"ppg" | "rpg" | "apg" | "spg" | "bpg" | "rating">("ppg");
+  const [sortBy, setSortBy] = useState<SortKey>("ppg");
+  const [sortOpen, setSortOpen] = useState(false);
 
   const [simResults, setSimResults] = useState<GameResult[]>([]);
-
   const { toast } = useToast();
 
   const filledPositions = roster.map(p => p.position);
-  const round = roster.length;
 
   const startDraft = (selectedMode: "draft" | "memory") => {
     setMode(selectedMode);
@@ -81,7 +181,7 @@ export function GameContainer() {
     setDraftedIds(newDraftedIds);
 
     if (newRoster.length >= 5) {
-      setPhase("lineup-review");
+      setTimeout(() => setPhase("lineup-review"), 400);
     } else {
       const nextEra = getRandomEra(newFilled, [...usedEras]);
       setUsedEras(prev => [...prev, nextEra]);
@@ -116,14 +216,6 @@ export function GameContainer() {
     toast({ title: "Copied to clipboard!", description: "Share your results with other fans." });
   };
 
-  const STAT_COLS: { key: "ppg" | "rpg" | "apg" | "spg" | "bpg"; label: string }[] = [
-    { key: "ppg", label: "PPG" },
-    { key: "rpg", label: "RPG" },
-    { key: "apg", label: "APG" },
-    { key: "spg", label: "SPG" },
-    { key: "bpg", label: "BPG" },
-  ];
-
   return (
     <div className="min-h-dvh bg-black text-white selection:bg-cardinal selection:text-white flex flex-col font-sans overflow-x-hidden">
 
@@ -150,18 +242,17 @@ export function GameContainer() {
         )}
       </header>
 
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col w-full max-w-6xl mx-auto p-4 md:p-8 relative">
+      <main className="flex-1 flex flex-col w-full relative">
         <AnimatePresence mode="wait">
 
-          {/* MODE SELECT */}
+          {/* ── MODE SELECT ── */}
           {phase === "mode-select" && (
             <motion.div
               key="mode-select"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="flex-1 flex flex-col items-center justify-center text-center space-y-12"
+              className="flex-1 flex flex-col items-center justify-center text-center space-y-12 p-8 max-w-4xl mx-auto w-full"
             >
               <div className="space-y-4">
                 <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter drop-shadow-lg">
@@ -171,7 +262,6 @@ export function GameContainer() {
                   Draft your all-time Louisville Cardinals starting five and simulate a season against college basketball's elite.
                 </p>
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
                 <button
                   data-testid="button-draft-mode"
@@ -182,7 +272,6 @@ export function GameContainer() {
                   <h3 className="text-2xl font-bold mb-2">Draft Mode</h3>
                   <p className="text-sm text-white/60">Build your team era by era. See stats, filter by position, and make the perfect pick.</p>
                 </button>
-
                 <button
                   data-testid="button-memory-mode"
                   onClick={() => startDraft("memory")}
@@ -196,197 +285,175 @@ export function GameContainer() {
             </motion.div>
           )}
 
-          {/* DRAFTING */}
+          {/* ── DRAFTING ── */}
           {phase === "drafting" && (
             <motion.div
-              key={`drafting-${currentEra}`}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="flex-1 flex flex-col gap-6"
+              key="drafting"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex-1 flex flex-col md:flex-row h-[calc(100dvh-65px)]"
             >
-              {/* Era header + progress */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                  <p className="text-white/40 text-xs uppercase tracking-widest font-bold mb-1">
-                    Round {round + 1} of 5
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <span className="bg-cardinal text-white text-sm font-black px-3 py-1 rounded-full uppercase tracking-wider" data-testid="text-current-era">
+              {/* LEFT: Player list */}
+              <div className="flex flex-col flex-1 min-w-0 border-r border-white/10 overflow-hidden">
+
+                {/* Era + round strip */}
+                <div className="px-5 pt-4 pb-3 border-b border-white/10 flex items-center justify-between gap-3 shrink-0">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="bg-cardinal/20 text-cardinal border border-cardinal/40 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider"
+                      data-testid="text-current-era"
+                    >
                       {currentEra}
                     </span>
-                    <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight">
+                    <span className="text-white/50 text-sm font-bold hidden sm:inline">
                       {ERA_LABELS[currentEra]}
-                    </h2>
+                    </span>
                   </div>
+                  <span className="text-white/30 text-xs font-bold uppercase tracking-widest shrink-0">
+                    Pick {roster.length + 1} of 5
+                  </span>
                 </div>
 
-                {/* Filled positions indicator */}
-                <div className="flex items-center gap-2">
-                  {(["PG", "SG", "SF", "PF", "C"] as Position[]).map(pos => {
-                    const filled = filledPositions.includes(pos);
-                    const player = roster.find(p => p.position === pos);
-                    return (
-                      <div
-                        key={pos}
-                        data-testid={`slot-${pos}`}
-                        title={player?.name}
+                {/* Filters row */}
+                <div className="px-5 py-3 flex items-center gap-2 border-b border-white/10 shrink-0">
+                  {/* Position pills */}
+                  <div className="flex items-center gap-1 bg-white/5 rounded-lg p-0.5">
+                    {(["All", "G", "F", "C"] as PosFilter[]).map(f => (
+                      <button
+                        key={f}
+                        data-testid={`filter-pos-${f}`}
+                        onClick={() => setPosFilter(f)}
                         className={cn(
-                          "w-10 h-10 rounded-lg border flex flex-col items-center justify-center text-xs font-black transition-all",
-                          filled
-                            ? "border-cardinal bg-cardinal/20 text-cardinal"
-                            : "border-white/20 text-white/30"
+                          "px-3 py-1.5 rounded-md text-sm font-bold transition-all",
+                          posFilter === f ? "bg-cardinal text-white" : "text-white/50 hover:text-white"
                         )}
                       >
-                        {pos}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Filters */}
-              <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-                {/* Position filter */}
-                <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-lg p-1">
-                  {(["All", "G", "F", "C"] as PosFilter[]).map(f => (
-                    <button
-                      key={f}
-                      data-testid={`filter-pos-${f}`}
-                      onClick={() => setPosFilter(f)}
-                      className={cn(
-                        "px-4 py-1.5 rounded-md text-sm font-bold transition-all",
-                        posFilter === f
-                          ? "bg-cardinal text-white"
-                          : "text-white/50 hover:text-white"
-                      )}
-                    >
-                      {f}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Search */}
-                <div className="relative flex-1 max-w-xs">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
-                  <input
-                    data-testid="input-search"
-                    type="text"
-                    placeholder="Search..."
-                    value={search}
-                    onChange={e => setSearch(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-white/30"
-                  />
-                </div>
-
-                {/* Sort */}
-                <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-lg p-1 ml-auto">
-                  {STAT_COLS.map(s => (
-                    <button
-                      key={s.key}
-                      data-testid={`sort-${s.key}`}
-                      onClick={() => setSortBy(s.key)}
-                      className={cn(
-                        "px-3 py-1.5 rounded-md text-xs font-bold transition-all",
-                        sortBy === s.key
-                          ? "bg-white/10 text-white"
-                          : "text-white/40 hover:text-white"
-                      )}
-                    >
-                      {s.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Player count */}
-              <p className="text-white/40 text-sm -mt-2">
-                {filteredPlayers.length} player{filteredPlayers.length !== 1 ? "s" : ""} available
-              </p>
-
-              {/* Player list */}
-              <div className="flex flex-col gap-1 overflow-y-auto max-h-[50vh] pr-1">
-                {filteredPlayers.length === 0 ? (
-                  <div className="py-12 text-center text-white/30 font-bold uppercase tracking-wider text-sm">
-                    No players available for this era and filter
+                        {f}
+                      </button>
+                    ))}
                   </div>
-                ) : (
-                  filteredPlayers.map((player, i) => (
-                    <motion.button
-                      key={player.id}
-                      data-testid={`player-row-${player.id}`}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.03 }}
-                      onClick={() => handlePick(player)}
-                      className="group flex items-center gap-4 w-full px-4 py-3 rounded-xl border border-white/5 bg-white/3 hover:bg-cardinal/10 hover:border-cardinal/50 transition-all text-left"
-                    >
-                      {/* Name + position + era */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-white group-hover:text-cardinal transition-colors truncate">
-                            {player.name}
-                          </span>
-                          <span className="text-cardinal text-xs font-black shrink-0">
-                            {player.position}
-                          </span>
-                        </div>
-                        <div className="text-xs text-white/40 mt-0.5 truncate">
-                          {player.eraLabel} · {player.era}
-                          {mode === "draft" && (
-                            <span className="ml-2 text-gold font-bold">
-                              #{player.jerseyNumber}
-                            </span>
-                          )}
-                        </div>
-                      </div>
 
-                      {/* Stats */}
-                      {mode === "draft" ? (
-                        <div className="hidden sm:flex items-center gap-5 shrink-0">
-                          {STAT_COLS.map(s => (
-                            <div key={s.key} className="text-center w-10">
-                              <div className={cn(
-                                "text-sm font-bold tabular-nums",
-                                s.key === sortBy ? "text-white" : "text-white/60"
-                              )}>
-                                {player[s.key].toFixed(1)}
-                              </div>
-                              <div className="text-[10px] text-white/30 uppercase">{s.label}</div>
-                            </div>
-                          ))}
-                          <div className="text-center w-10">
-                            <div className="text-sm font-bold tabular-nums text-gold">
-                              {player.rating}
-                            </div>
-                            <div className="text-[10px] text-white/30 uppercase">RTG</div>
+                  {/* Search */}
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/30" />
+                    <input
+                      data-testid="input-search"
+                      type="text"
+                      placeholder="Search..."
+                      value={search}
+                      onChange={e => setSearch(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-lg pl-8 pr-3 py-1.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-white/30"
+                    />
+                  </div>
+
+                  {/* Sort dropdown */}
+                  <div className="relative">
+                    <button
+                      data-testid="button-sort"
+                      onClick={() => setSortOpen(v => !v)}
+                      className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm font-bold text-white/70 hover:text-white transition-all"
+                    >
+                      {sortBy.toUpperCase()}
+                      <ChevronDown className="w-3 h-3" />
+                    </button>
+                    {sortOpen && (
+                      <div className="absolute right-0 top-full mt-1 bg-[#0d1520] border border-white/10 rounded-xl shadow-2xl z-20 overflow-hidden min-w-[90px]">
+                        {STAT_COLS.map(s => (
+                          <button
+                            key={s.key}
+                            data-testid={`sort-${s.key}`}
+                            onClick={() => { setSortBy(s.key); setSortOpen(false); }}
+                            className={cn(
+                              "w-full text-left px-4 py-2.5 text-sm font-bold transition-all",
+                              sortBy === s.key ? "text-white bg-cardinal/20" : "text-white/50 hover:text-white hover:bg-white/5"
+                            )}
+                          >
+                            {s.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Player count */}
+                <div className="px-5 py-2 text-xs text-white/30 font-medium shrink-0">
+                  {filteredPlayers.length} player{filteredPlayers.length !== 1 ? "s" : ""} available
+                </div>
+
+                {/* Player rows */}
+                <div className="flex-1 overflow-y-auto px-3 pb-4 space-y-0.5">
+                  {filteredPlayers.length === 0 ? (
+                    <div className="py-16 text-center text-white/20 font-bold uppercase tracking-wider text-sm">
+                      No players match
+                    </div>
+                  ) : (
+                    filteredPlayers.map((player, i) => (
+                      <motion.button
+                        key={player.id}
+                        data-testid={`player-row-${player.id}`}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.025 }}
+                        onClick={() => handlePick(player)}
+                        className="group w-full flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-cardinal/10 hover:border-cardinal/30 border border-transparent transition-all text-left cursor-pointer"
+                      >
+                        {/* Name + meta */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-white group-hover:text-cardinal transition-colors text-sm md:text-base truncate">
+                              {player.name}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <span className="text-cardinal text-xs font-black">{player.position}</span>
+                            <span className="text-white/20 text-xs">·</span>
+                            <span className="text-white/40 text-xs truncate">{player.eraLabel} · {player.era}</span>
                           </div>
                         </div>
-                      ) : (
-                        <div className="text-sm text-white/20 font-bold italic shrink-0 hidden sm:block">
-                          Stats hidden
-                        </div>
-                      )}
 
-                      {/* Pick button */}
-                      <div className="shrink-0 text-xs font-black uppercase tracking-wider text-white/20 group-hover:text-cardinal transition-colors">
-                        Pick
-                      </div>
-                    </motion.button>
-                  ))
-                )}
+                        {/* Stats */}
+                        {mode === "draft" ? (
+                          <div className="hidden sm:flex items-center gap-4 shrink-0">
+                            {STAT_COLS.map(s => (
+                              <div key={s.key} className="text-center w-9">
+                                <div className={cn(
+                                  "text-sm font-bold tabular-nums leading-tight",
+                                  s.key === sortBy ? "text-white" : "text-white/50"
+                                )}>
+                                  {player[s.key].toFixed(1)}
+                                </div>
+                                <div className="text-[9px] text-white/25 uppercase tracking-wider">{s.label}</div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-xs text-white/20 italic hidden sm:block shrink-0">Hidden</span>
+                        )}
+                      </motion.button>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {/* RIGHT: Court diagram */}
+              <div className="hidden md:flex flex-col items-center justify-center bg-[#080e18] w-[360px] lg:w-[420px] shrink-0 p-6">
+                <div className="w-full aspect-[400/520] relative">
+                  <CourtDiagram roster={roster} />
+                </div>
               </div>
             </motion.div>
           )}
 
-          {/* LINEUP REVIEW */}
+          {/* ── LINEUP REVIEW ── */}
           {phase === "lineup-review" && (
             <motion.div
               key="lineup-review"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex-1 flex flex-col items-center justify-center space-y-12"
+              className="flex-1 flex flex-col items-center justify-center space-y-12 p-8"
             >
               <div className="text-center space-y-4">
                 <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">Your Squad is Set</h2>
@@ -395,7 +462,6 @@ export function GameContainer() {
                   <span className="text-3xl font-black text-gold" data-testid="text-team-rating">{calculateTeamRating(roster)}</span>
                 </div>
               </div>
-
               <div className="flex flex-wrap justify-center gap-4 md:gap-6 w-full">
                 {roster.map((player, idx) => (
                   <motion.div
@@ -408,7 +474,6 @@ export function GameContainer() {
                   </motion.div>
                 ))}
               </div>
-
               <Button
                 data-testid="button-simulate"
                 onClick={startSimulation}
@@ -420,36 +485,33 @@ export function GameContainer() {
             </motion.div>
           )}
 
-          {/* SIMULATING */}
+          {/* ── SIMULATING ── */}
           {phase === "simulating" && (
             <SimulationTicker results={simResults} onComplete={() => setPhase("results")} />
           )}
 
-          {/* RESULTS */}
+          {/* ── RESULTS ── */}
           {phase === "results" && (
             <motion.div
               key="results"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="flex-1 flex flex-col items-center justify-center space-y-8 text-center"
+              className="flex-1 flex flex-col items-center justify-center space-y-8 text-center p-8"
             >
               {(() => {
                 const wins = simResults.filter(g => g.won).length;
                 const losses = simResults.filter(g => !g.won).length;
                 const finalGame = simResults[simResults.length - 1];
-
                 return (
                   <>
                     <h2 className="text-7xl md:text-9xl font-black uppercase tracking-tighter text-white drop-shadow-2xl" data-testid="text-final-record">
                       {wins}<span className="text-cardinal">-</span>{losses}
                     </h2>
-
                     <div className="bg-cardinal/20 border border-cardinal/50 rounded-xl px-8 py-4">
                       <p className="text-2xl font-bold text-gold uppercase tracking-widest" data-testid="text-result-milestone">
                         {finalGame.milestone || "Season Complete"}
                       </p>
                     </div>
-
                     <div className="flex gap-4 mt-8">
                       <Button
                         data-testid="button-share"
@@ -500,14 +562,13 @@ function SimulationTicker({ results, onComplete }: { results: GameResult[]; onCo
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex-1 flex flex-col items-center justify-center w-full max-w-2xl mx-auto"
+      className="flex-1 flex flex-col items-center justify-center w-full max-w-2xl mx-auto p-8"
     >
       <div className="text-5xl font-black font-mono mb-12 tracking-tighter" data-testid="text-sim-record">
         <span className="text-white">{currentWins}</span>
         <span className="text-white/30 mx-2">-</span>
         <span className="text-cardinal">{currentLosses}</span>
       </div>
-
       <div className="w-full bg-white/5 border border-white/10 rounded-lg p-6 font-mono text-sm h-[400px] overflow-hidden relative">
         <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black via-transparent to-black z-10" />
         <div className="flex flex-col justify-end h-full space-y-2 relative z-0">
@@ -545,4 +606,3 @@ function SimulationTicker({ results, onComplete }: { results: GameResult[]; onCo
     </motion.div>
   );
 }
-
