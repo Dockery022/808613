@@ -17,15 +17,13 @@ export type Player = {
 }
 
 export const ERA_LABELS: Record<string, string> = {
-  "1960s": "The Early Legends",
-  "1970s": "The Crum Dynasty",
-  "1980s": "The Crum Dynasty",
-  "1990s": "The Crum Dynasty",
-  "2000s": "The Pitino Revival",
-  "2010s": "The Modern Era",
+  "early":  "The Dromo Era",
+  "crum":   "The Crum Dynasty",
+  "pitino": "The Pitino Era",
+  "modern": "The Modern Era",
 };
 
-export const ALL_ERAS = ["1960s", "1970s", "1980s", "1990s", "2000s", "2010s"];
+export const ALL_ERAS = ["early", "crum", "pitino", "modern"];
 
 // Stats sourced from sports-reference.com/cbb — career per-game averages at Louisville.
 // Pre-1973 steals/blocks were not officially tracked; those are set to 0.0.
@@ -36,8 +34,8 @@ export const PLAYERS: Player[] = [
   {
     id: "w-unseld",
     name: "Wes Unseld",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "C",
     jerseyNumber: "31",
     ppg: 20.6,
@@ -51,8 +49,8 @@ export const PLAYERS: Player[] = [
   {
     id: "b-beard",
     name: "Butch Beard",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "PG",
     jerseyNumber: "14",
     ppg: 19.0,
@@ -66,8 +64,8 @@ export const PLAYERS: Player[] = [
   {
     id: "j-price",
     name: "Jim Price",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "SG",
     jerseyNumber: "15",
     ppg: 17.1,
@@ -81,8 +79,8 @@ export const PLAYERS: Player[] = [
   {
     id: "m-grosso",
     name: "Mike Grosso",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "C",
     jerseyNumber: "20",
     ppg: 16.2,
@@ -96,8 +94,8 @@ export const PLAYERS: Player[] = [
   {
     id: "w-houston",
     name: "Wade Houston",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "SF",
     jerseyNumber: "43",
     ppg: 13.5,
@@ -111,8 +109,8 @@ export const PLAYERS: Player[] = [
   {
     id: "b-olsen",
     name: "Bud Olsen",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "C",
     jerseyNumber: "41",
     ppg: 13.0,
@@ -126,8 +124,8 @@ export const PLAYERS: Player[] = [
   {
     id: "j-king-60",
     name: "Jerry King",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "PF",
     jerseyNumber: "34",
     ppg: 13.8,
@@ -141,8 +139,8 @@ export const PLAYERS: Player[] = [
   {
     id: "r-thomas-60",
     name: "Ron Thomas",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "SG",
     jerseyNumber: "35",
     ppg: 9.5,
@@ -156,8 +154,8 @@ export const PLAYERS: Player[] = [
   {
     id: "f-holden",
     name: "Fred Holden",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "SG",
     jerseyNumber: "24",
     ppg: 10.5,
@@ -171,8 +169,8 @@ export const PLAYERS: Player[] = [
   {
     id: "h-bacon",
     name: "Henry Bacon",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "SG",
     jerseyNumber: "22",
     ppg: 10.5,
@@ -186,8 +184,8 @@ export const PLAYERS: Player[] = [
   {
     id: "m-lawhon",
     name: "Mike Lawhon",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "SF",
     jerseyNumber: "33",
     ppg: 9.5,
@@ -201,8 +199,8 @@ export const PLAYERS: Player[] = [
   {
     id: "e-whitehead",
     name: "Eddie Whitehead",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "PF",
     jerseyNumber: "44",
     ppg: 8.8,
@@ -216,8 +214,8 @@ export const PLAYERS: Player[] = [
   {
     id: "d-gilbert",
     name: "Dave Gilbert",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "PG",
     jerseyNumber: "13",
     ppg: 8.0,
@@ -231,8 +229,8 @@ export const PLAYERS: Player[] = [
   {
     id: "d-paulette",
     name: "Dennis Paulette",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "PF",
     jerseyNumber: "55",
     ppg: 8.5,
@@ -246,8 +244,8 @@ export const PLAYERS: Player[] = [
   {
     id: "a-vilcheck",
     name: "Al Vilcheck",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "C",
     jerseyNumber: "52",
     ppg: 7.5,
@@ -261,8 +259,8 @@ export const PLAYERS: Player[] = [
   {
     id: "m-selvy",
     name: "Marv Selvy",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "SF",
     jerseyNumber: "32",
     ppg: 7.2,
@@ -276,8 +274,8 @@ export const PLAYERS: Player[] = [
   {
     id: "b-gorius",
     name: "Bob Gorius",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "PF",
     jerseyNumber: "45",
     ppg: 7.0,
@@ -291,8 +289,8 @@ export const PLAYERS: Player[] = [
   {
     id: "j-liedtke",
     name: "Joe Liedtke",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "C",
     jerseyNumber: "53",
     ppg: 6.8,
@@ -306,8 +304,8 @@ export const PLAYERS: Player[] = [
   {
     id: "d-deeken",
     name: "Denny Deeken",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "PG",
     jerseyNumber: "11",
     ppg: 5.8,
@@ -321,8 +319,8 @@ export const PLAYERS: Player[] = [
   {
     id: "l-carter-60",
     name: "Larry Carter",
-    era: "1960s",
-    eraLabel: "The Early Legends",
+    era: "early",
+    eraLabel: "The Dromo Era",
     position: "PG",
     jerseyNumber: "12",
     ppg: 6.5,
@@ -338,7 +336,7 @@ export const PLAYERS: Player[] = [
   {
     id: "d-griffith",
     name: "Darrell Griffith",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SG",
     jerseyNumber: "35",
@@ -353,7 +351,7 @@ export const PLAYERS: Player[] = [
   {
     id: "j-bridgeman",
     name: "Junior Bridgeman",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SF",
     jerseyNumber: "10",
@@ -368,7 +366,7 @@ export const PLAYERS: Player[] = [
   {
     id: "a-murphy",
     name: "Allen Murphy",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SF",
     jerseyNumber: "23",
@@ -383,7 +381,7 @@ export const PLAYERS: Player[] = [
   {
     id: "w-cox",
     name: "Wesley Cox",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SF",
     jerseyNumber: "25",
@@ -398,7 +396,7 @@ export const PLAYERS: Player[] = [
   {
     id: "t-howard",
     name: "Terry Howard",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SG",
     jerseyNumber: "14",
@@ -413,7 +411,7 @@ export const PLAYERS: Player[] = [
   {
     id: "r-gallon",
     name: "Ricky Gallon",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "C",
     jerseyNumber: "54",
@@ -428,7 +426,7 @@ export const PLAYERS: Player[] = [
   {
     id: "p-bond",
     name: "Phil Bond",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PG",
     jerseyNumber: "12",
@@ -443,7 +441,7 @@ export const PLAYERS: Player[] = [
   {
     id: "l-williams-70",
     name: "Larry Williams",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PF",
     jerseyNumber: "42",
@@ -458,7 +456,7 @@ export const PLAYERS: Player[] = [
   {
     id: "r-burkman",
     name: "Roger Burkman",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SG",
     jerseyNumber: "22",
@@ -473,7 +471,7 @@ export const PLAYERS: Player[] = [
   {
     id: "r-wilson-70",
     name: "Rick Wilson",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SG",
     jerseyNumber: "44",
@@ -488,7 +486,7 @@ export const PLAYERS: Player[] = [
   {
     id: "b-bunton",
     name: "Bill Bunton",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "C",
     jerseyNumber: "53",
@@ -503,7 +501,7 @@ export const PLAYERS: Player[] = [
   {
     id: "b-butler-70",
     name: "Bill Butler",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PF",
     jerseyNumber: "40",
@@ -518,7 +516,7 @@ export const PLAYERS: Player[] = [
   {
     id: "p-wright",
     name: "Poncho Wright",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SF",
     jerseyNumber: "31",
@@ -533,7 +531,7 @@ export const PLAYERS: Player[] = [
   {
     id: "b-turner-70",
     name: "Bobby Turner",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SF",
     jerseyNumber: "32",
@@ -548,7 +546,7 @@ export const PLAYERS: Player[] = [
   {
     id: "t-branch-70",
     name: "Tony Branch",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PG",
     jerseyNumber: "11",
@@ -563,7 +561,7 @@ export const PLAYERS: Player[] = [
   {
     id: "k-bradley-70",
     name: "Ken Bradley",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "C",
     jerseyNumber: "50",
@@ -578,7 +576,7 @@ export const PLAYERS: Player[] = [
   {
     id: "d-brown-70",
     name: "Danny Brown",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SG",
     jerseyNumber: "5",
@@ -593,7 +591,7 @@ export const PLAYERS: Player[] = [
   {
     id: "i-whitfield",
     name: "Ike Whitfield",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PF",
     jerseyNumber: "43",
@@ -608,7 +606,7 @@ export const PLAYERS: Player[] = [
   {
     id: "d-cleveland",
     name: "Daryl Cleveland",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PF",
     jerseyNumber: "41",
@@ -623,7 +621,7 @@ export const PLAYERS: Player[] = [
   {
     id: "m-pulliam",
     name: "Marty Pulliam",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "C",
     jerseyNumber: "51",
@@ -638,7 +636,7 @@ export const PLAYERS: Player[] = [
   {
     id: "j-ellis-70",
     name: "Jim Ellis",
-    era: "1970s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PG",
     jerseyNumber: "3",
@@ -655,7 +653,7 @@ export const PLAYERS: Player[] = [
   {
     id: "p-ellison",
     name: "Pervis Ellison",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "C",
     jerseyNumber: "43",
@@ -670,7 +668,7 @@ export const PLAYERS: Player[] = [
   {
     id: "m-wagner",
     name: "Milt Wagner",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PG",
     jerseyNumber: "13",
@@ -685,7 +683,7 @@ export const PLAYERS: Player[] = [
   {
     id: "b-thompson",
     name: "Billy Thompson",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SF",
     jerseyNumber: "5",
@@ -700,7 +698,7 @@ export const PLAYERS: Player[] = [
   {
     id: "d-smith-80",
     name: "Derek Smith",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SG",
     jerseyNumber: "30",
@@ -715,7 +713,7 @@ export const PLAYERS: Player[] = [
   {
     id: "r-mccray",
     name: "Rodney McCray",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PF",
     jerseyNumber: "21",
@@ -730,7 +728,7 @@ export const PLAYERS: Player[] = [
   {
     id: "s-mccray",
     name: "Scooter McCray",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PF",
     jerseyNumber: "45",
@@ -745,7 +743,7 @@ export const PLAYERS: Player[] = [
   {
     id: "j-eaves",
     name: "Jerry Eaves",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PG",
     jerseyNumber: "4",
@@ -760,7 +758,7 @@ export const PLAYERS: Player[] = [
   {
     id: "w-brown-80",
     name: "Wiley Brown",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PF",
     jerseyNumber: "55",
@@ -775,7 +773,7 @@ export const PLAYERS: Player[] = [
   {
     id: "l-smith",
     name: "LaBradford Smith",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SG",
     jerseyNumber: "21",
@@ -790,7 +788,7 @@ export const PLAYERS: Player[] = [
   {
     id: "k-payne",
     name: "Kenny Payne",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SF",
     jerseyNumber: "25",
@@ -805,7 +803,7 @@ export const PLAYERS: Player[] = [
   {
     id: "h-crook",
     name: "Herbert Crook",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PF",
     jerseyNumber: "4",
@@ -820,7 +818,7 @@ export const PLAYERS: Player[] = [
   {
     id: "f-spencer",
     name: "Felton Spencer",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "C",
     jerseyNumber: "52",
@@ -835,7 +833,7 @@ export const PLAYERS: Player[] = [
   {
     id: "e-sullivan",
     name: "Everick Sullivan",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SG",
     jerseyNumber: "12",
@@ -850,7 +848,7 @@ export const PLAYERS: Player[] = [
   {
     id: "t-kimbro",
     name: "Tony Kimbro",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SF",
     jerseyNumber: "33",
@@ -865,7 +863,7 @@ export const PLAYERS: Player[] = [
   {
     id: "j-hall-80",
     name: "Jeff Hall",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PG",
     jerseyNumber: "23",
@@ -880,7 +878,7 @@ export const PLAYERS: Player[] = [
   {
     id: "k-williams-80",
     name: "Keith Williams",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SG",
     jerseyNumber: "11",
@@ -895,7 +893,7 @@ export const PLAYERS: Player[] = [
   {
     id: "c-holden-80",
     name: "Cornelius Holden",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "C",
     jerseyNumber: "42",
@@ -910,7 +908,7 @@ export const PLAYERS: Player[] = [
   {
     id: "b-sumpter",
     name: "Barry Sumpter",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "C",
     jerseyNumber: "41",
@@ -925,7 +923,7 @@ export const PLAYERS: Player[] = [
   {
     id: "r-valentine",
     name: "Robbie Valentine",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PG",
     jerseyNumber: "3",
@@ -940,7 +938,7 @@ export const PLAYERS: Player[] = [
   {
     id: "p-williams-80",
     name: "Perky Williams",
-    era: "1980s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SF",
     jerseyNumber: "44",
@@ -957,7 +955,7 @@ export const PLAYERS: Player[] = [
   {
     id: "d-wheat",
     name: "DeJuan Wheat",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PG",
     jerseyNumber: "32",
@@ -972,7 +970,7 @@ export const PLAYERS: Player[] = [
   {
     id: "c-rozier",
     name: "Clifford Rozier",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PF",
     jerseyNumber: "44",
@@ -987,7 +985,7 @@ export const PLAYERS: Player[] = [
   {
     id: "d-morton",
     name: "Dwayne Morton",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SF",
     jerseyNumber: "34",
@@ -1002,7 +1000,7 @@ export const PLAYERS: Player[] = [
   {
     id: "g-minor",
     name: "Greg Minor",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SG",
     jerseyNumber: "24",
@@ -1017,7 +1015,7 @@ export const PLAYERS: Player[] = [
   {
     id: "s-walker",
     name: "Samaki Walker",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "C",
     jerseyNumber: "54",
@@ -1032,7 +1030,7 @@ export const PLAYERS: Player[] = [
   {
     id: "a-sims",
     name: "Alvin Sims",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SG",
     jerseyNumber: "11",
@@ -1047,7 +1045,7 @@ export const PLAYERS: Player[] = [
   {
     id: "e-slay",
     name: "Eric Slay",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SG",
     jerseyNumber: "12",
@@ -1062,7 +1060,7 @@ export const PLAYERS: Player[] = [
   {
     id: "a-watkins",
     name: "Alvin Watkins",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SF",
     jerseyNumber: "33",
@@ -1077,7 +1075,7 @@ export const PLAYERS: Player[] = [
   {
     id: "d-dantzler",
     name: "Damion Dantzler",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SF",
     jerseyNumber: "22",
@@ -1092,7 +1090,7 @@ export const PLAYERS: Player[] = [
   {
     id: "b-kiser",
     name: "Brian Kiser",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PF",
     jerseyNumber: "50",
@@ -1107,7 +1105,7 @@ export const PLAYERS: Player[] = [
   {
     id: "a-sanders",
     name: "Alex Sanders",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PF",
     jerseyNumber: "41",
@@ -1122,7 +1120,7 @@ export const PLAYERS: Player[] = [
   {
     id: "c-murray",
     name: "Cameron Murray",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PG",
     jerseyNumber: "15",
@@ -1137,7 +1135,7 @@ export const PLAYERS: Player[] = [
   {
     id: "n-johnson-90",
     name: "Nate Johnson",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SF",
     jerseyNumber: "35",
@@ -1152,7 +1150,7 @@ export const PLAYERS: Player[] = [
   {
     id: "t-williams-90",
     name: "Tony Williams",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PF",
     jerseyNumber: "45",
@@ -1167,7 +1165,7 @@ export const PLAYERS: Player[] = [
   {
     id: "m-maybin",
     name: "Marques Maybin",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SG",
     jerseyNumber: "3",
@@ -1182,7 +1180,7 @@ export const PLAYERS: Player[] = [
   {
     id: "d-edward",
     name: "Dion Edward",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "C",
     jerseyNumber: "51",
@@ -1197,7 +1195,7 @@ export const PLAYERS: Player[] = [
   {
     id: "k-legree",
     name: "Keith LeGree",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SG",
     jerseyNumber: "5",
@@ -1212,7 +1210,7 @@ export const PLAYERS: Player[] = [
   {
     id: "k-smiley",
     name: "Kevin Smiley",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PG",
     jerseyNumber: "13",
@@ -1227,7 +1225,7 @@ export const PLAYERS: Player[] = [
   {
     id: "e-johnson-90",
     name: "Eric Johnson",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "SF",
     jerseyNumber: "43",
@@ -1242,7 +1240,7 @@ export const PLAYERS: Player[] = [
   {
     id: "bj-flynn",
     name: "B.J. Flynn",
-    era: "1990s",
+    era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PG",
     jerseyNumber: "14",
@@ -1259,8 +1257,8 @@ export const PLAYERS: Player[] = [
   {
     id: "r-gaines",
     name: "Reece Gaines",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "SG",
     jerseyNumber: "22",
     ppg: 15.6,
@@ -1274,8 +1272,8 @@ export const PLAYERS: Player[] = [
   {
     id: "f-garcia",
     name: "Francisco Garcia",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "SF",
     jerseyNumber: "32",
     ppg: 14.4,
@@ -1289,8 +1287,8 @@ export const PLAYERS: Player[] = [
   {
     id: "t-williams-00",
     name: "Terrence Williams",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "SF",
     jerseyNumber: "1",
     ppg: 11.2,
@@ -1304,8 +1302,8 @@ export const PLAYERS: Player[] = [
   {
     id: "t-dean",
     name: "Taquan Dean",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "SG",
     jerseyNumber: "5",
     ppg: 12.9,
@@ -1319,8 +1317,8 @@ export const PLAYERS: Player[] = [
   {
     id: "earl-clark",
     name: "Earl Clark",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "SF",
     jerseyNumber: "15",
     ppg: 10.6,
@@ -1334,8 +1332,8 @@ export const PLAYERS: Player[] = [
   {
     id: "s-samuels",
     name: "Samardo Samuels",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "C",
     jerseyNumber: "24",
     ppg: 13.5,
@@ -1349,8 +1347,8 @@ export const PLAYERS: Player[] = [
   {
     id: "l-obannon",
     name: "Larry O'Bannon",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "SF",
     jerseyNumber: "34",
     ppg: 8.8,
@@ -1364,8 +1362,8 @@ export const PLAYERS: Player[] = [
   {
     id: "e-myles",
     name: "Ellis Myles",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "PF",
     jerseyNumber: "2",
     ppg: 8.4,
@@ -1379,8 +1377,8 @@ export const PLAYERS: Player[] = [
   {
     id: "e-sosa",
     name: "Edgar Sosa",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "PG",
     jerseyNumber: "10",
     ppg: 9.7,
@@ -1394,8 +1392,8 @@ export const PLAYERS: Player[] = [
   {
     id: "j-palacios",
     name: "Juan Palacios",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "PF",
     jerseyNumber: "3",
     ppg: 8.9,
@@ -1409,8 +1407,8 @@ export const PLAYERS: Player[] = [
   {
     id: "d-padgett-00",
     name: "David Padgett",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "C",
     jerseyNumber: "4",
     ppg: 8.8,
@@ -1424,8 +1422,8 @@ export const PLAYERS: Player[] = [
   {
     id: "b-jenkins-00",
     name: "Brandon Jenkins",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "SG",
     jerseyNumber: "20",
     ppg: 7.5,
@@ -1439,8 +1437,8 @@ export const PLAYERS: Player[] = [
   {
     id: "l-wade-00",
     name: "Lorrenzo Wade",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "SF",
     jerseyNumber: "11",
     ppg: 6.5,
@@ -1454,8 +1452,8 @@ export const PLAYERS: Player[] = [
   {
     id: "a-mcgee-00",
     name: "Andre McGee",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "PG",
     jerseyNumber: "21",
     ppg: 5.5,
@@ -1469,8 +1467,8 @@ export const PLAYERS: Player[] = [
   {
     id: "j-smith-00",
     name: "Jerry Smith",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "PG",
     jerseyNumber: "23",
     ppg: 6.5,
@@ -1484,8 +1482,8 @@ export const PLAYERS: Player[] = [
   {
     id: "o-george-00",
     name: "Otis George",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "PF",
     jerseyNumber: "42",
     ppg: 7.0,
@@ -1499,8 +1497,8 @@ export const PLAYERS: Player[] = [
   {
     id: "p-knowles",
     name: "Preston Knowles",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "PG",
     jerseyNumber: "14",
     ppg: 9.5,
@@ -1514,8 +1512,8 @@ export const PLAYERS: Player[] = [
   {
     id: "t-jennings-00",
     name: "Terrence Jennings",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "PF",
     jerseyNumber: "44",
     ppg: 6.0,
@@ -1529,8 +1527,8 @@ export const PLAYERS: Player[] = [
   {
     id: "p-johnson-00",
     name: "Perrin Johnson",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "SG",
     jerseyNumber: "31",
     ppg: 5.0,
@@ -1544,8 +1542,8 @@ export const PLAYERS: Player[] = [
   {
     id: "b-johnson-00",
     name: "Brian Johnson",
-    era: "2000s",
-    eraLabel: "The Pitino Revival",
+    era: "pitino",
+    eraLabel: "The Pitino Era",
     position: "C",
     jerseyNumber: "50",
     ppg: 5.5,
@@ -1561,7 +1559,7 @@ export const PLAYERS: Player[] = [
   {
     id: "r-smith",
     name: "Russ Smith",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "PG",
     jerseyNumber: "2",
@@ -1576,7 +1574,7 @@ export const PLAYERS: Player[] = [
   {
     id: "p-siva",
     name: "Peyton Siva",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "PG",
     jerseyNumber: "3",
@@ -1591,7 +1589,7 @@ export const PLAYERS: Player[] = [
   {
     id: "d-mitchell",
     name: "Donovan Mitchell",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "SG",
     jerseyNumber: "45",
@@ -1606,7 +1604,7 @@ export const PLAYERS: Player[] = [
   {
     id: "m-harrell",
     name: "Montrezl Harrell",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "PF",
     jerseyNumber: "24",
@@ -1621,7 +1619,7 @@ export const PLAYERS: Player[] = [
   {
     id: "g-dieng",
     name: "Gorgui Dieng",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "C",
     jerseyNumber: "10",
@@ -1636,7 +1634,7 @@ export const PLAYERS: Player[] = [
   {
     id: "l-hancock",
     name: "Luke Hancock",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "SF",
     jerseyNumber: "11",
@@ -1651,7 +1649,7 @@ export const PLAYERS: Player[] = [
   {
     id: "c-behanan",
     name: "Chane Behanan",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "PF",
     jerseyNumber: "21",
@@ -1666,7 +1664,7 @@ export const PLAYERS: Player[] = [
   {
     id: "w-blackshear",
     name: "Wayne Blackshear",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "SG",
     jerseyNumber: "20",
@@ -1681,7 +1679,7 @@ export const PLAYERS: Player[] = [
   {
     id: "k-kuric",
     name: "Kyle Kuric",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "SG",
     jerseyNumber: "14",
@@ -1696,7 +1694,7 @@ export const PLAYERS: Player[] = [
   {
     id: "d-adel",
     name: "Deng Adel",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "SF",
     jerseyNumber: "22",
@@ -1711,7 +1709,7 @@ export const PLAYERS: Player[] = [
   {
     id: "q-snider",
     name: "Quentin Snider",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "PG",
     jerseyNumber: "4",
@@ -1726,7 +1724,7 @@ export const PLAYERS: Player[] = [
   {
     id: "r-spalding",
     name: "Raymond Spalding",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "PF",
     jerseyNumber: "13",
@@ -1741,7 +1739,7 @@ export const PLAYERS: Player[] = [
   {
     id: "j-johnson-10",
     name: "Jaylen Johnson",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "PF",
     jerseyNumber: "10",
@@ -1756,7 +1754,7 @@ export const PLAYERS: Player[] = [
   {
     id: "m-mathiang",
     name: "Mangok Mathiang",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "C",
     jerseyNumber: "12",
@@ -1771,7 +1769,7 @@ export const PLAYERS: Player[] = [
   {
     id: "c-jones-10",
     name: "Chris Jones",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "PG",
     jerseyNumber: "5",
@@ -1786,7 +1784,7 @@ export const PLAYERS: Player[] = [
   {
     id: "v-king",
     name: "V.J. King",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "SF",
     jerseyNumber: "0",
@@ -1801,7 +1799,7 @@ export const PLAYERS: Player[] = [
   {
     id: "r-mcmahon",
     name: "Ryan McMahon",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "SG",
     jerseyNumber: "30",
@@ -1816,7 +1814,7 @@ export const PLAYERS: Player[] = [
   {
     id: "k-ware",
     name: "Kevin Ware",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "SG",
     jerseyNumber: "5",
@@ -1831,7 +1829,7 @@ export const PLAYERS: Player[] = [
   {
     id: "s-van-treese",
     name: "Stephan Van Treese",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "C",
     jerseyNumber: "41",
@@ -1846,7 +1844,7 @@ export const PLAYERS: Player[] = [
   {
     id: "d-lee-10",
     name: "Damion Lee",
-    era: "2010s",
+    era: "modern",
     eraLabel: "The Modern Era",
     position: "SG",
     jerseyNumber: "1",

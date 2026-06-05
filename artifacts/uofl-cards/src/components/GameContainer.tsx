@@ -820,12 +820,10 @@ export function GameContainer() {
                 <div className="bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl overflow-hidden divide-y divide-zinc-200 dark:divide-white/10">
                   {[
                     { era: "all", label: "All-Time", sub: "All eras combined", color: "bg-cardinal" },
-                    { era: "1960s", label: "Early Legends", sub: "1960s", color: "bg-red-800" },
-                    { era: "1970s", label: "Crum Dynasty", sub: "1970s", color: "bg-orange-700" },
-                    { era: "1980s", label: "Crum Dynasty", sub: "1980s", color: "bg-amber-600" },
-                    { era: "1990s", label: "Crum Dynasty", sub: "1990s", color: "bg-yellow-600" },
-                    { era: "2000s", label: "Pitino Revival", sub: "2000s", color: "bg-emerald-700" },
-                    { era: "2010s", label: "Modern Era", sub: "2010s", color: "bg-blue-700" },
+                    { era: "early",  label: "The Dromo Era",    sub: "John Dromo · 1967–1971",       color: "bg-red-800" },
+                    { era: "crum",   label: "The Crum Dynasty", sub: "Denny Crum · 1971–2001",        color: "bg-amber-600" },
+                    { era: "pitino", label: "The Pitino Era",   sub: "Rick Pitino · 2001–2017",       color: "bg-emerald-700" },
+                    { era: "modern", label: "The Modern Era",   sub: "Padgett / Mack / Payne / Kelsey", color: "bg-blue-700" },
                   ].map(({ era, label, sub, color }) => {
                     const count = countPlayersForEra(era);
                     if (count === 0) return null;
