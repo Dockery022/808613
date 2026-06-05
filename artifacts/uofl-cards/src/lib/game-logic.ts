@@ -1,7 +1,24 @@
 import { PLAYERS, Player, Position, ALL_ERAS } from "./data";
 
-export type GamePhase = "mode-select" | "drafting" | "lineup-review" | "simulating" | "results";
+export type GamePhase = "mode-select" | "drafting" | "lineup-review" | "simulating" | "results" | "jersey-quiz" | "jersey-results";
 export type GameMode = "draft" | "memory";
+
+export type JerseyQuestion = {
+  player: Player;
+  choices: Player[];   // 4 total, player is one of them
+};
+
+export function generateJerseyQuiz(count = 10): JerseyQuestion[] {
+  // Only players with a real jersey number
+  const pool = shuffleArray(PLAYERS.filter(p => p.jerseyNumber && p.jerseyNumber !== ""));
+  const selected = pool.slice(0, count);
+
+  return selected.map(player => {
+    const wrong = shuffleArray(PLAYERS.filter(p => p.id !== player.id)).slice(0, 3);
+    const choices = shuffleArray([player, ...wrong]);
+    return { player, choices };
+  });
+}
 
 export const POSITIONS: Position[] = ["PG", "SG", "SF", "PF", "C"];
 

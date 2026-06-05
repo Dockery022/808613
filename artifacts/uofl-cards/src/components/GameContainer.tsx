@@ -6,6 +6,8 @@ import {
   simulateSeason,
   calculateTeamRating,
   GameResult,
+  generateJerseyQuiz,
+  JerseyQuestion,
 } from "@/lib/game-logic";
 import { Player, Position, ERA_LABELS } from "@/lib/data";
 import { PlayerCard } from "@/components/PlayerCard";
@@ -142,6 +144,12 @@ export function GameContainer() {
 
   const [spinsLeft, setSpinsLeft] = useState(2);
   const [simResults, setSimResults] = useState<GameResult[]>([]);
+
+  // Jersey Guesser state
+  const [quizQuestions, setQuizQuestions] = useState<JerseyQuestion[]>([]);
+  const [quizIndex, setQuizIndex] = useState(0);
+  const [quizScore, setQuizScore] = useState(0);
+  const [quizPicked, setQuizPicked] = useState<string | null>(null); // id of picked player
   const [isDark, setIsDark] = useState<boolean>(() => localStorage.getItem("theme") !== "light");
 
   useEffect(() => {
@@ -186,6 +194,31 @@ export function GameContainer() {
     setSpinsLeft(prev => prev - 1);
     setPosFilter("All");
     setSearch("");
+  };
+
+  const startJerseyQuiz = () => {
+    const qs = generateJerseyQuiz(10);
+    setQuizQuestions(qs);
+    setQuizIndex(0);
+    setQuizScore(0);
+    setQuizPicked(null);
+    setPhase("jersey-quiz");
+  };
+
+  const handleQuizPick = (playerId: string) => {
+    if (quizPicked) return;
+    const correct = quizQuestions[quizIndex].player.id;
+    setQuizPicked(playerId);
+    if (playerId === correct) setQuizScore(s => s + 1);
+  };
+
+  const nextQuizQuestion = () => {
+    if (quizIndex + 1 >= quizQuestions.length) {
+      setPhase("jersey-results" as GamePhase);
+    } else {
+      setQuizIndex(i => i + 1);
+      setQuizPicked(null);
+    }
   };
 
   const eraPlayers = useMemo(() => {
