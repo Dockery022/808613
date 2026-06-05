@@ -1,4 +1,4 @@
-import { PLAYERS, Player, Position, ALL_ERAS } from "./data";
+import { PLAYERS, Player, Position, ALL_ERAS, HISTORICAL_SEASONS, HistoricalSeason } from "./data";
 
 export type GamePhase =
   | "mode-select"
@@ -169,4 +169,29 @@ export function simulateSeason(teamRating: number): GameResult[] {
   }
 
   return results;
+}
+
+export type SeasonRank = {
+  percentile: number;        // 0–100, higher = better
+  rank: number;              // 1-based rank among all historical seasons
+  total: number;             // total seasons in dataset
+  closestSeasons: HistoricalSeason[]; // up to 3 nearest seasons by wins
+  betterThan: number;        // number of historical seasons with fewer wins
+};
+
+export function rankSeason(wins: number): SeasonRank {
+  const sorted = [...HISTORICAL_SEASONS].sort((a, b) => b.wins - a.wins);
+  const total = sorted.length;
+
+  // rank: how many historical seasons had MORE wins (1-based)
+  const rank = sorted.filter(s => s.wins > wins).length + 1;
+  const betterThan = HISTORICAL_SEASONS.filter(s => s.wins < wins).length;
+  const percentile = Math.round((betterThan / total) * 100);
+
+  // closest seasons: nearest by wins difference
+  const byDistance = [...HISTORICAL_SEASONS]
+    .sort((a, b) => Math.abs(a.wins - wins) - Math.abs(b.wins - wins))
+    .slice(0, 3);
+
+  return { percentile, rank, total, closestSeasons: byDistance, betterThan };
 }

@@ -1859,3 +1859,76 @@ export const PLAYERS: Player[] = [
     accolades: "ACC All-Tournament (stats from season logs)"
   },
 ];
+
+export type HistoricalSeason = {
+  season: string;
+  wins: number;
+  losses: number;
+  record: string;
+  conference: string;
+  postseason: string;
+  champion: boolean;
+  finalFour: boolean;
+};
+
+export const HISTORICAL_SEASONS: HistoricalSeason[] = [
+  { season: "2024-25", wins: 27, losses: 8,  record: "27-8",  conference: "18-2 ACC",          postseason: "NCAA First Round",        champion: false, finalFour: false },
+  { season: "2023-24", wins: 8,  losses: 24, record: "8-24",  conference: "3-17 ACC",           postseason: "",                        champion: false, finalFour: false },
+  { season: "2022-23", wins: 4,  losses: 28, record: "4-28",  conference: "2-18 ACC",           postseason: "",                        champion: false, finalFour: false },
+  { season: "2021-22", wins: 13, losses: 19, record: "13-19", conference: "6-14 AAC",           postseason: "",                        champion: false, finalFour: false },
+  { season: "2020-21", wins: 13, losses: 7,  record: "13-7",  conference: "8-5 ACC",            postseason: "",                        champion: false, finalFour: false },
+  { season: "2019-20", wins: 24, losses: 7,  record: "24-7",  conference: "15-5 ACC",           postseason: "COVID canceled",          champion: false, finalFour: false },
+  { season: "2018-19", wins: 20, losses: 14, record: "20-14", conference: "10-8 ACC",           postseason: "NCAA First Round",        champion: false, finalFour: false },
+  { season: "2017-18", wins: 22, losses: 14, record: "22-14", conference: "9-9 AAC",            postseason: "NIT Sweet 16",            champion: false, finalFour: false },
+  { season: "2016-17", wins: 25, losses: 9,  record: "25-9",  conference: "12-6 ACC",           postseason: "NCAA Second Round",       champion: false, finalFour: false },
+  { season: "2015-16", wins: 23, losses: 8,  record: "23-8",  conference: "12-6 ACC",           postseason: "",                        champion: false, finalFour: false },
+  { season: "2014-15", wins: 27, losses: 9,  record: "27-9",  conference: "12-6 ACC",           postseason: "NCAA",                    champion: false, finalFour: false },
+  { season: "2013-14", wins: 31, losses: 6,  record: "31-6",  conference: "15-3 AAC",           postseason: "NCAA",                    champion: false, finalFour: false },
+  { season: "2012-13", wins: 35, losses: 5,  record: "35-5",  conference: "14-4 Big East",      postseason: "NCAA Champions",          champion: true,  finalFour: true  },
+  { season: "2011-12", wins: 30, losses: 10, record: "30-10", conference: "10-8 Big East",      postseason: "NCAA Elite Eight",        champion: false, finalFour: false },
+  { season: "2010-11", wins: 25, losses: 10, record: "25-10", conference: "12-6 Big East",      postseason: "NCAA Second Round",       champion: false, finalFour: false },
+  { season: "2009-10", wins: 20, losses: 13, record: "20-13", conference: "11-7 Big East",      postseason: "NCAA First Round",        champion: false, finalFour: false },
+  { season: "2008-09", wins: 31, losses: 6,  record: "31-6",  conference: "16-2 Big East",      postseason: "NCAA Elite Eight",        champion: false, finalFour: false },
+  { season: "2007-08", wins: 27, losses: 9,  record: "27-9",  conference: "14-4 Big East",      postseason: "NCAA Elite Eight",        champion: false, finalFour: false },
+  { season: "2006-07", wins: 24, losses: 10, record: "24-10", conference: "12-4 Big East",      postseason: "NCAA Second Round",       champion: false, finalFour: false },
+  { season: "2005-06", wins: 21, losses: 13, record: "21-13", conference: "6-10 Big East",      postseason: "NIT Semifinals",          champion: false, finalFour: false },
+  { season: "2004-05", wins: 33, losses: 5,  record: "33-5",  conference: "14-2 C-USA",         postseason: "NCAA Final Four",         champion: false, finalFour: true  },
+  { season: "2003-04", wins: 20, losses: 10, record: "20-10", conference: "9-7 C-USA",          postseason: "NCAA First Round",        champion: false, finalFour: false },
+  { season: "2002-03", wins: 25, losses: 7,  record: "25-7",  conference: "11-5 C-USA",         postseason: "NCAA Second Round",       champion: false, finalFour: false },
+  { season: "2001-02", wins: 19, losses: 13, record: "19-13", conference: "8-8 C-USA",          postseason: "NIT Second Round",        champion: false, finalFour: false },
+  { season: "2000-01", wins: 12, losses: 19, record: "12-19", conference: "8-8 C-USA",          postseason: "",                        champion: false, finalFour: false },
+  { season: "1999-00", wins: 19, losses: 12, record: "19-12", conference: "10-6 C-USA",         postseason: "NCAA First Round",        champion: false, finalFour: false },
+  { season: "1998-99", wins: 19, losses: 11, record: "19-11", conference: "11-5 C-USA",         postseason: "NCAA First Round",        champion: false, finalFour: false },
+  { season: "1997-98", wins: 12, losses: 20, record: "12-20", conference: "5-11 C-USA",         postseason: "",                        champion: false, finalFour: false },
+  { season: "1996-97", wins: 26, losses: 9,  record: "26-9",  conference: "9-5 C-USA",          postseason: "NCAA Elite Eight",        champion: false, finalFour: false },
+  { season: "1995-96", wins: 22, losses: 12, record: "22-12", conference: "10-4 C-USA",         postseason: "NCAA Sweet 16",           champion: false, finalFour: false },
+  { season: "1994-95", wins: 19, losses: 14, record: "19-14", conference: "7-5 Metro",          postseason: "NCAA First Round",        champion: false, finalFour: false },
+  { season: "1993-94", wins: 28, losses: 6,  record: "28-6",  conference: "10-2 Metro",         postseason: "NCAA Sweet 16",           champion: false, finalFour: false },
+  { season: "1992-93", wins: 22, losses: 9,  record: "22-9",  conference: "11-1 Metro",         postseason: "NCAA Sweet 16",           champion: false, finalFour: false },
+  { season: "1991-92", wins: 19, losses: 11, record: "19-11", conference: "7-5 Metro",          postseason: "NCAA Second Round",       champion: false, finalFour: false },
+  { season: "1990-91", wins: 14, losses: 16, record: "14-16", conference: "4-10 Metro",         postseason: "",                        champion: false, finalFour: false },
+  { season: "1989-90", wins: 27, losses: 8,  record: "27-8",  conference: "12-2 Metro",         postseason: "NCAA Second Round",       champion: false, finalFour: false },
+  { season: "1988-89", wins: 24, losses: 9,  record: "24-9",  conference: "8-4 Metro",          postseason: "NCAA Sweet 16",           champion: false, finalFour: false },
+  { season: "1987-88", wins: 24, losses: 11, record: "24-11", conference: "9-3 Metro",          postseason: "NCAA Sweet 16",           champion: false, finalFour: false },
+  { season: "1986-87", wins: 18, losses: 14, record: "18-14", conference: "9-3 Metro",          postseason: "",                        champion: false, finalFour: false },
+  { season: "1985-86", wins: 32, losses: 7,  record: "32-7",  conference: "10-2 Metro",         postseason: "NCAA Champions",          champion: true,  finalFour: true  },
+  { season: "1984-85", wins: 19, losses: 18, record: "19-18", conference: "6-8 Metro",          postseason: "NIT Semifinals",          champion: false, finalFour: false },
+  { season: "1983-84", wins: 24, losses: 11, record: "24-11", conference: "11-3 Metro",         postseason: "NCAA Sweet 16",           champion: false, finalFour: false },
+  { season: "1982-83", wins: 32, losses: 4,  record: "32-4",  conference: "14-0 Metro",         postseason: "NCAA Final Four",         champion: false, finalFour: true  },
+  { season: "1981-82", wins: 23, losses: 10, record: "23-10", conference: "10-5 Metro",         postseason: "NCAA Final Four",         champion: false, finalFour: true  },
+  { season: "1980-81", wins: 21, losses: 9,  record: "21-9",  conference: "13-1 Metro",         postseason: "NCAA Second Round",       champion: false, finalFour: false },
+  { season: "1979-80", wins: 33, losses: 3,  record: "33-3",  conference: "14-0 Metro",         postseason: "NCAA Champions",          champion: true,  finalFour: true  },
+  { season: "1978-79", wins: 24, losses: 8,  record: "24-8",  conference: "9-1 Metro",          postseason: "NCAA Sweet 16",           champion: false, finalFour: false },
+  { season: "1977-78", wins: 23, losses: 7,  record: "23-7",  conference: "12-3 Metro",         postseason: "NCAA Sweet 16",           champion: false, finalFour: false },
+  { season: "1976-77", wins: 21, losses: 7,  record: "21-7",  conference: "6-1 Metro",          postseason: "NCAA First Round",        champion: false, finalFour: false },
+  { season: "1975-76", wins: 20, losses: 8,  record: "20-8",  conference: "2-2 Metro",          postseason: "NIT Second Round",        champion: false, finalFour: false },
+  { season: "1974-75", wins: 28, losses: 3,  record: "28-3",  conference: "12-2 Missouri Val.", postseason: "NCAA Final Four",         champion: false, finalFour: true  },
+  { season: "1973-74", wins: 21, losses: 7,  record: "21-7",  conference: "11-1 Missouri Val.", postseason: "NCAA Sweet 16",           champion: false, finalFour: false },
+  { season: "1972-73", wins: 23, losses: 7,  record: "23-7",  conference: "11-3 Missouri Val.", postseason: "NIT Second Round",        champion: false, finalFour: false },
+  { season: "1971-72", wins: 26, losses: 5,  record: "26-5",  conference: "12-2 Missouri Val.", postseason: "NCAA Final Four",         champion: false, finalFour: true  },
+  { season: "1970-71", wins: 20, losses: 9,  record: "20-9",  conference: "9-5 Missouri Val.",  postseason: "NIT First Round",         champion: false, finalFour: false },
+  { season: "1969-70", wins: 18, losses: 9,  record: "18-9",  conference: "11-5 Missouri Val.", postseason: "NIT First Round",         champion: false, finalFour: false },
+  { season: "1968-69", wins: 21, losses: 6,  record: "21-6",  conference: "13-3 Missouri Val.", postseason: "NIT Second Round",        champion: false, finalFour: false },
+  { season: "1967-68", wins: 21, losses: 7,  record: "21-7",  conference: "14-2 Missouri Val.", postseason: "NCAA Sweet 16",           champion: false, finalFour: false },
+  { season: "1966-67", wins: 23, losses: 5,  record: "23-5",  conference: "12-2 Missouri Val.", postseason: "NCAA Sweet 16",           champion: false, finalFour: false },
+];

@@ -9,6 +9,7 @@ import {
   generateJerseyQuiz,
   countPlayersForEra,
   JerseyQuestion,
+  rankSeason,
 } from "@/lib/game-logic";
 import { Player, Position, ERA_LABELS } from "@/lib/data";
 import { PlayerCard } from "@/components/PlayerCard";
@@ -651,40 +652,147 @@ export function GameContainer() {
               key="results"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="flex-1 flex flex-col items-center justify-center space-y-8 text-center p-8 bg-white dark:bg-zinc-900"
+              className="flex-1 flex flex-col items-center bg-white dark:bg-zinc-900 overflow-y-auto pb-10"
             >
               {(() => {
                 const wins = simResults.filter(g => g.won).length;
                 const losses = simResults.filter(g => !g.won).length;
                 const finalGame = simResults[simResults.length - 1];
+                const rank = rankSeason(wins);
+
+                const percentileLabel =
+                  rank.percentile >= 95 ? "All-Time Great" :
+                  rank.percentile >= 80 ? "Elite Season" :
+                  rank.percentile >= 60 ? "Strong Season" :
+                  rank.percentile >= 40 ? "Average Season" :
+                  rank.percentile >= 20 ? "Below Average" :
+                  "Rough Year";
+
+                const percentileColor =
+                  rank.percentile >= 80 ? "text-gold" :
+                  rank.percentile >= 50 ? "text-green-400" :
+                  rank.percentile >= 25 ? "text-zinc-400" :
+                  "text-red-400";
+
                 return (
-                  <>
-                    <h2 className="text-6xl md:text-9xl font-black uppercase tracking-tighter text-zinc-900 dark:text-white drop-shadow-2xl" data-testid="text-final-record">
-                      {wins}<span className="text-cardinal">-</span>{losses}
-                    </h2>
-                    <div className="bg-cardinal/20 border border-cardinal/50 rounded-xl px-6 py-4 max-w-sm mx-auto">
-                      <p className="text-lg md:text-2xl font-bold text-gold uppercase tracking-widest" data-testid="text-result-milestone">
-                        {finalGame.milestone || "Season Complete"}
-                      </p>
+                  <div className="w-full max-w-lg mx-auto px-6 pt-8 space-y-6">
+                    {/* Big record */}
+                    <div className="text-center space-y-3">
+                      <h2 className="text-7xl md:text-9xl font-black uppercase tracking-tighter text-zinc-900 dark:text-white drop-shadow-2xl" data-testid="text-final-record">
+                        {wins}<span className="text-cardinal">-</span>{losses}
+                      </h2>
+                      <div className="bg-cardinal/20 border border-cardinal/50 rounded-xl px-6 py-3 inline-block">
+                        <p className="text-base md:text-xl font-bold text-gold uppercase tracking-widest" data-testid="text-result-milestone">
+                          {finalGame.milestone || "Season Complete"}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-4 mt-8 w-full sm:w-auto">
+
+                    {/* Historical rank panel */}
+                    <div className="bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-white/10 rounded-2xl overflow-hidden">
+                      <div className="px-5 py-3 border-b border-zinc-200 dark:border-white/10 flex items-center gap-2">
+                        <div className="w-1.5 h-4 rounded-full bg-cardinal" />
+                        <span className="text-xs font-black uppercase tracking-widest text-zinc-500 dark:text-white/40">
+                          Program History Ranking
+                        </span>
+                      </div>
+
+                      {/* Rank headline */}
+                      <div className="px-5 py-5 flex items-center justify-between gap-4">
+                        <div>
+                          <div className={cn("text-3xl font-black tabular-nums", percentileColor)}>
+                            #{rank.rank} <span className="text-base font-bold text-zinc-400 dark:text-white/30">of {rank.total}</span>
+                          </div>
+                          <div className="text-sm text-zinc-500 dark:text-white/50 mt-0.5">
+                            Better than <span className="font-bold text-zinc-700 dark:text-white/80">{rank.betterThan}</span> of {rank.total} UofL seasons
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className={cn("text-sm font-black uppercase tracking-wider", percentileColor)}>
+                            {percentileLabel}
+                          </div>
+                          <div className="text-xs text-zinc-400 dark:text-white/30 mt-0.5">
+                            {rank.percentile}th percentile
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Percentile bar */}
+                      <div className="px-5 pb-4">
+                        <div className="h-2 w-full bg-zinc-200 dark:bg-white/10 rounded-full overflow-hidden">
+                          <motion.div
+                            className={cn(
+                              "h-full rounded-full",
+                              rank.percentile >= 80 ? "bg-gold" :
+                              rank.percentile >= 50 ? "bg-green-500" :
+                              rank.percentile >= 25 ? "bg-zinc-400" : "bg-red-500"
+                            )}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${rank.percentile}%` }}
+                            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+                          />
+                        </div>
+                        <div className="flex justify-between text-[10px] text-zinc-400 dark:text-white/20 mt-1 font-medium">
+                          <span>Worst</span><span>Best</span>
+                        </div>
+                      </div>
+
+                      {/* Closest historical seasons */}
+                      <div className="border-t border-zinc-200 dark:border-white/10">
+                        <div className="px-5 py-2 text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-white/30">
+                          Comparable Seasons
+                        </div>
+                        {rank.closestSeasons.map((s, i) => (
+                          <div
+                            key={s.season}
+                            className={cn(
+                              "flex items-center px-5 py-3 gap-4",
+                              i < rank.closestSeasons.length - 1 && "border-b border-zinc-100 dark:border-white/5"
+                            )}
+                          >
+                            <div className="w-7 h-7 rounded-lg bg-cardinal/10 border border-cardinal/20 flex items-center justify-center text-cardinal text-[10px] font-black shrink-0">
+                              {s.wins}W
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="text-sm font-bold text-zinc-800 dark:text-white leading-tight">
+                                {s.season}
+                                {s.champion && <span className="ml-2 text-[10px] font-black text-gold bg-gold/10 border border-gold/30 rounded px-1.5 py-0.5 uppercase">🏆 Champs</span>}
+                                {s.finalFour && !s.champion && <span className="ml-2 text-[10px] font-black text-orange-400 bg-orange-400/10 border border-orange-400/30 rounded px-1.5 py-0.5 uppercase">Final Four</span>}
+                              </div>
+                              <div className="text-xs text-zinc-400 dark:text-white/30 truncate">
+                                {s.record} · {s.postseason || s.conference}
+                              </div>
+                            </div>
+                            <div className={cn(
+                              "text-xs font-black tabular-nums shrink-0",
+                              s.wins > wins ? "text-red-400" : s.wins < wins ? "text-green-400" : "text-zinc-400 dark:text-white/40"
+                            )}>
+                              {s.wins > wins ? `−${s.wins - wins}W` : s.wins < wins ? `+${wins - s.wins}W` : "Same"}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="flex flex-col sm:flex-row gap-3">
                       <Button
                         data-testid="button-share"
                         onClick={copyResults}
                         variant="outline"
-                        className="bg-zinc-100 border-zinc-300 hover:bg-zinc-200 dark:bg-white/5 dark:border-white/20 dark:hover:bg-white/10"
+                        className="flex-1 bg-zinc-100 border-zinc-300 hover:bg-zinc-200 dark:bg-white/5 dark:border-white/20 dark:hover:bg-white/10"
                       >
                         <Share className="w-4 h-4 mr-2" /> Share Results
                       </Button>
                       <Button
                         data-testid="button-play-again"
                         onClick={resetGame}
-                        className="bg-cardinal hover:bg-red-700 text-white"
+                        className="flex-1 bg-cardinal hover:bg-red-700 text-white"
                       >
                         <Play className="w-4 h-4 mr-2" /> Play Again
                       </Button>
                     </div>
-                  </>
+                  </div>
                 );
               })()}
             </motion.div>
