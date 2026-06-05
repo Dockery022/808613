@@ -550,7 +550,7 @@ export function GameContainer() {
 
       {/* ── FOOTER ── */}
       <footer className="fixed bottom-0 inset-x-0 z-50 bg-zinc-950/90 backdrop-blur-md border-t border-white/10 h-14 flex items-center justify-center gap-8">
-        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X" className="text-white/50 hover:text-white transition-colors">
+        <a href="https://x.com/The1912Society" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X" className="text-white/50 hover:text-white transition-colors">
           <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zM17.083 19.77l1.586-2.092L6.087 4.27H4.461l12.622 15.5z"/>
           </svg>
