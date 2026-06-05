@@ -20,7 +20,7 @@ export function PlayerCard({ player, onClick, selected, hideStats, className }: 
         "relative w-full max-w-[280px] aspect-[2.5/3.5] rounded-xl overflow-hidden cursor-pointer",
         "border-4 transition-colors duration-300",
         selected ? "border-gold shadow-[0_0_20px_rgba(201,168,76,0.6)]" : "border-cardinal hover:border-gold/50",
-        "bg-zinc-900 flex flex-col",
+        "bg-[#8b9da1] flex flex-col",
         className
       )}
     >

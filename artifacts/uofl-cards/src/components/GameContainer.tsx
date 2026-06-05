@@ -218,10 +218,10 @@ export function GameContainer() {
   };
 
   return (
-    <div className="min-h-dvh bg-zinc-900 text-white selection:bg-cardinal selection:text-white flex flex-col font-sans overflow-x-hidden pb-14">
+    <div className="min-h-dvh bg-[#8b9da1] text-white selection:bg-cardinal selection:text-white flex flex-col font-sans overflow-x-hidden pb-14">
 
       {/* Header */}
-      <header className="py-4 px-6 border-b border-white/10 bg-zinc-900/80 backdrop-blur-md sticky top-0 z-50 flex justify-between items-center">
+      <header className="py-4 px-6 border-b border-white/10 bg-[#8b9da1]/80 backdrop-blur-md sticky top-0 z-50 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <h1 className="font-black text-xl tracking-tighter uppercase text-white">
             Cardinal <span className="text-cardinal">Basketball</span>
