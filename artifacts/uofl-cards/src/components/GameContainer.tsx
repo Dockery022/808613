@@ -229,13 +229,13 @@ export function GameContainer() {
   return (
     <div className={cn(
       "min-h-dvh text-white selection:bg-cardinal selection:text-white flex flex-col font-sans overflow-x-hidden pb-14",
-      isDark ? "dark bg-zinc-950" : "bg-[#8b9da1]"
+      isDark ? "dark bg-zinc-950" : "bg-white"
     )}>
 
       {/* Header */}
-      <header className="py-4 px-6 border-b border-white/10 bg-[#8b9da1]/80 dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-50 flex justify-between items-center">
+      <header className="py-4 px-6 border-b border-black/10 dark:border-white/10 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-50 flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <h1 className="font-black text-xl tracking-tighter uppercase text-white">
+          <h1 className="font-black text-xl tracking-tighter uppercase text-zinc-900 dark:text-white">
             Cardinal <span className="text-cardinal">Basketball</span>
           </h1>
         </div>
@@ -246,7 +246,7 @@ export function GameContainer() {
               size="sm"
               onClick={resetGame}
               data-testid="button-restart"
-              className="text-white/60 hover:text-white"
+              className="text-zinc-500 hover:text-zinc-900 dark:text-white/60 dark:hover:text-white"
             >
               <RotateCcw className="w-4 h-4 mr-2" /> Restart
             </Button>
@@ -254,7 +254,7 @@ export function GameContainer() {
           <button
             onClick={toggleTheme}
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            className="p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-2 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-black/5 dark:text-white/50 dark:hover:text-white dark:hover:bg-white/10 transition-colors"
           >
             {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
@@ -274,10 +274,10 @@ export function GameContainer() {
               className="flex-1 flex flex-col items-center justify-center text-center space-y-12 p-8 max-w-4xl mx-auto w-full"
             >
               <div className="space-y-4">
-                <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter drop-shadow-lg">
+                <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-zinc-900 dark:text-white">
                   Can You Go <br /><span className="text-cardinal">Undefeated?</span>
                 </h2>
-                <p className="text-lg text-white/60 max-w-md mx-auto">
+                <p className="text-lg text-zinc-500 dark:text-white/60 max-w-md mx-auto">
                   Draft your all-time Louisville Cardinals starting five and simulate a season against college basketball's elite.
                 </p>
               </div>
