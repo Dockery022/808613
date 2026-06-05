@@ -450,7 +450,7 @@ export function GameContainer() {
                 </div>
 
                 {/* Player rows */}
-                <div className="flex-1 overflow-y-auto px-3 pb-4 space-y-2">
+                <div className="flex-1 overflow-y-auto px-3 pb-20 md:pb-4 space-y-2">
                   {filteredPlayers.length === 0 ? (
                     <div className="py-16 text-center text-zinc-400 dark:text-white/20 font-bold uppercase tracking-wider text-sm">
                       No players match
@@ -524,7 +524,7 @@ export function GameContainer() {
                               w-full border-b border-zinc-200 dark:border-white/10 p-3
                               md:w-[360px] lg:w-[420px] md:border-b-0 md:border-l md:p-6 md:items-start">
                 {/* aspect-ratio wrapper: width drives height to keep court proportions */}
-                <div className="relative w-[130px] md:w-full aspect-[400/520]">
+                <div className="relative w-[180px] sm:w-[220px] md:w-full aspect-[400/520]">
                   <CourtDiagram roster={roster} />
                 </div>
               </div>
@@ -538,10 +538,10 @@ export function GameContainer() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex-1 flex flex-col items-center justify-center space-y-12 p-8 bg-white dark:bg-zinc-900"
+              className="flex-1 flex flex-col items-center justify-center space-y-8 md:space-y-12 p-4 md:p-8 bg-white dark:bg-zinc-900"
             >
               <div className="text-center space-y-4">
-                <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">Your Squad is Set</h2>
+                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter">Your Squad is Set</h2>
                 <div className="inline-flex items-center gap-4 bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-full px-6 py-3">
                   <span className="text-zinc-500 dark:text-white/60 font-bold uppercase tracking-wider text-sm">Team Rating</span>
                   <span className="text-3xl font-black text-gold" data-testid="text-team-rating">{calculateTeamRating(roster)}</span>
@@ -589,15 +589,15 @@ export function GameContainer() {
                 const finalGame = simResults[simResults.length - 1];
                 return (
                   <>
-                    <h2 className="text-7xl md:text-9xl font-black uppercase tracking-tighter text-white drop-shadow-2xl" data-testid="text-final-record">
+                    <h2 className="text-6xl md:text-9xl font-black uppercase tracking-tighter text-zinc-900 dark:text-white drop-shadow-2xl" data-testid="text-final-record">
                       {wins}<span className="text-cardinal">-</span>{losses}
                     </h2>
-                    <div className="bg-cardinal/20 border border-cardinal/50 rounded-xl px-8 py-4">
-                      <p className="text-2xl font-bold text-gold uppercase tracking-widest" data-testid="text-result-milestone">
+                    <div className="bg-cardinal/20 border border-cardinal/50 rounded-xl px-6 py-4 max-w-sm mx-auto">
+                      <p className="text-lg md:text-2xl font-bold text-gold uppercase tracking-widest" data-testid="text-result-milestone">
                         {finalGame.milestone || "Season Complete"}
                       </p>
                     </div>
-                    <div className="flex gap-4 mt-8">
+                    <div className="flex flex-col sm:flex-row gap-4 mt-8 w-full sm:w-auto">
                       <Button
                         data-testid="button-share"
                         onClick={copyResults}
