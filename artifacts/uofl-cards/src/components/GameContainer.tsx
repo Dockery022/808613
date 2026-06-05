@@ -486,9 +486,11 @@ export function GameContainer() {
                 </div>
               </div>
 
-              {/* RIGHT: Court diagram */}
-              <div className="hidden md:flex flex-col items-center justify-center bg-gray-100 dark:bg-[#080e18] w-[360px] lg:w-[420px] shrink-0 p-6">
-                <div className="w-full aspect-[400/520] relative">
+              {/* Court diagram — always visible; stacks above player list on mobile */}
+              <div className="flex order-first md:order-last flex-col items-center justify-center bg-gray-100 dark:bg-[#080e18] shrink-0
+                              h-44 w-full border-b border-zinc-200 dark:border-white/10 p-3
+                              md:h-auto md:w-[360px] lg:md:w-[420px] md:border-b-0 md:border-l md:p-6">
+                <div className="h-full w-auto md:w-full aspect-[400/520] relative">
                   <CourtDiagram roster={roster} />
                 </div>
               </div>
