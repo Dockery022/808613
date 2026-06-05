@@ -140,6 +140,7 @@ export function GameContainer() {
   const [sortBy, setSortBy] = useState<SortKey>("ppg");
   const [sortOpen, setSortOpen] = useState(false);
 
+  const [spinsLeft, setSpinsLeft] = useState(2);
   const [simResults, setSimResults] = useState<GameResult[]>([]);
   const [isDark, setIsDark] = useState<boolean>(() => localStorage.getItem("theme") !== "light");
 
@@ -167,6 +168,7 @@ export function GameContainer() {
     setRoster([]);
     setDraftedIds([]);
     setUsedEras([]);
+    setSpinsLeft(2);
     const era = getRandomEra([], []);
     setCurrentEra(era);
     setUsedEras([era]);
@@ -174,6 +176,16 @@ export function GameContainer() {
     setSearch("");
     setSortBy("ppg");
     setPhase("drafting");
+  };
+
+  const handleSpin = () => {
+    if (spinsLeft <= 0) return;
+    const newEra = getRandomEra(filledPositions, [currentEra]);
+    setCurrentEra(newEra);
+    setUsedEras(prev => [...prev, newEra]);
+    setSpinsLeft(prev => prev - 1);
+    setPosFilter("All");
+    setSearch("");
   };
 
   const eraPlayers = useMemo(() => {
@@ -347,6 +359,23 @@ export function GameContainer() {
                     <span className="text-zinc-500 dark:text-white/50 text-sm font-bold hidden sm:inline">
                       {ERA_LABELS[currentEra]}
                     </span>
+                    <button
+                      onClick={handleSpin}
+                      disabled={spinsLeft <= 0}
+                      title={spinsLeft > 0 ? `Spin for a new era (${spinsLeft} left)` : "No spins left"}
+                      className={cn(
+                        "flex items-center gap-1 text-xs font-black px-2.5 py-1 rounded-full border transition-all",
+                        spinsLeft > 0
+                          ? "bg-gold/10 text-gold border-gold/40 hover:bg-gold/20 cursor-pointer"
+                          : "bg-zinc-100 dark:bg-white/5 text-zinc-400 dark:text-white/20 border-zinc-200 dark:border-white/10 cursor-not-allowed opacity-50"
+                      )}
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                        <path d="M3 3v5h5" />
+                      </svg>
+                      <span>{spinsLeft}</span>
+                    </button>
                   </div>
                   <span className="text-zinc-400 dark:text-white/30 text-xs font-bold uppercase tracking-widest shrink-0">
                     Pick {roster.length + 1} of 5
