@@ -146,6 +146,7 @@ export function GameContainer() {
 
   const [spinsLeft, setSpinsLeft] = useState(2);
   const [simResults, setSimResults] = useState<GameResult[]>([]);
+  const [reviewTab, setReviewTab] = useState<"stats" | "gamelog">("stats");
 
   // Jersey Guesser state
   const [quizQuestions, setQuizQuestions] = useState<JerseyQuestion[]>([]);
@@ -777,12 +778,11 @@ export function GameContainer() {
                     {/* Action buttons */}
                     <div className="flex flex-col sm:flex-row gap-3">
                       <Button
-                        data-testid="button-share"
-                        onClick={copyResults}
+                        onClick={() => { setReviewTab("stats"); setPhase("season-review"); }}
                         variant="outline"
                         className="flex-1 bg-zinc-100 border-zinc-300 hover:bg-zinc-200 dark:bg-white/5 dark:border-white/20 dark:hover:bg-white/10"
                       >
-                        <Share className="w-4 h-4 mr-2" /> Share Results
+                        <Search className="w-4 h-4 mr-2" /> Review Season
                       </Button>
                       <Button
                         data-testid="button-play-again"
@@ -792,11 +792,203 @@ export function GameContainer() {
                         <Play className="w-4 h-4 mr-2" /> Play Again
                       </Button>
                     </div>
+                    <div className="flex gap-3">
+                      <Button
+                        data-testid="button-share"
+                        onClick={copyResults}
+                        variant="ghost"
+                        size="sm"
+                        className="flex-1 text-zinc-500 dark:text-white/40 hover:text-zinc-700 dark:hover:text-white/60 text-xs"
+                      >
+                        <Share className="w-3 h-3 mr-1.5" /> Share Results
+                      </Button>
+                    </div>
                   </div>
                 );
               })()}
             </motion.div>
           )}
+
+          {/* ── SEASON REVIEW ── */}
+          {phase === "season-review" && (() => {
+            const wins = simResults.filter(g => g.won).length;
+            const losses = simResults.filter(g => !g.won).length;
+            const finalGame = simResults[simResults.length - 1];
+            const regularSeason = simResults.filter(g => g.gameNumber <= 36);
+            const tourney = simResults.filter(g => g.gameNumber > 36);
+
+            return (
+              <motion.div
+                key="season-review"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="flex-1 flex flex-col bg-white dark:bg-zinc-900 overflow-hidden"
+              >
+                {/* Sub-header */}
+                <div className="px-4 py-3 border-b border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900 flex items-center gap-3">
+                  <button
+                    onClick={() => setPhase("results")}
+                    className="text-zinc-500 dark:text-white/40 hover:text-zinc-900 dark:hover:text-white transition-colors text-sm font-bold flex items-center gap-1"
+                  >
+                    ← Back
+                  </button>
+                  <div className="flex-1 text-center">
+                    <span className="text-sm font-black uppercase tracking-widest text-zinc-900 dark:text-white">
+                      {wins}<span className="text-cardinal">-</span>{losses}
+                    </span>
+                    <span className="text-xs text-zinc-400 dark:text-white/30 ml-2">· {finalGame.milestone || "Season Complete"}</span>
+                  </div>
+                </div>
+
+                {/* Tabs */}
+                <div className="flex border-b border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900">
+                  {(["stats", "gamelog"] as const).map(tab => (
+                    <button
+                      key={tab}
+                      onClick={() => setReviewTab(tab)}
+                      className={cn(
+                        "flex-1 py-3 text-xs font-black uppercase tracking-widest transition-colors",
+                        reviewTab === tab
+                          ? "text-cardinal border-b-2 border-cardinal"
+                          : "text-zinc-400 dark:text-white/30 hover:text-zinc-700 dark:hover:text-white/60"
+                      )}
+                    >
+                      {tab === "stats" ? "Player Stats" : "Game Log"}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Tab content */}
+                <div className="flex-1 overflow-y-auto">
+                  {reviewTab === "stats" && (
+                    <div className="p-4 space-y-3 max-w-lg mx-auto">
+                      {roster.map(player => (
+                        <div
+                          key={player.id}
+                          className="bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-white/10 rounded-2xl overflow-hidden"
+                        >
+                          {/* Player header */}
+                          <div className="flex items-center gap-3 px-4 py-3 border-b border-zinc-200 dark:border-white/10">
+                            <div className="w-9 h-9 rounded-xl bg-cardinal/10 border border-cardinal/20 flex items-center justify-center text-cardinal font-black text-sm shrink-0">
+                              #{player.jerseyNumber}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="font-black text-zinc-900 dark:text-white text-sm leading-tight truncate">{player.name}</div>
+                              <div className="text-[10px] text-zinc-400 dark:text-white/30 uppercase tracking-widest">{player.position} · {player.eraLabel}</div>
+                            </div>
+                            <div className="text-right shrink-0">
+                              <div className="text-lg font-black text-cardinal tabular-nums">{player.rating}</div>
+                              <div className="text-[10px] text-zinc-400 dark:text-white/30 uppercase tracking-widest">OVR</div>
+                            </div>
+                          </div>
+                          {/* Stat grid */}
+                          <div className="grid grid-cols-5 divide-x divide-zinc-200 dark:divide-white/10">
+                            {[
+                              { label: "PPG", value: player.ppg.toFixed(1) },
+                              { label: "RPG", value: player.rpg.toFixed(1) },
+                              { label: "APG", value: player.apg.toFixed(1) },
+                              { label: "SPG", value: player.spg.toFixed(1) },
+                              { label: "BPG", value: player.bpg.toFixed(1) },
+                            ].map(stat => (
+                              <div key={stat.label} className="flex flex-col items-center py-3">
+                                <div className="text-sm font-black text-zinc-800 dark:text-white tabular-nums">{stat.value}</div>
+                                <div className="text-[10px] text-zinc-400 dark:text-white/30 uppercase tracking-wider font-bold mt-0.5">{stat.label}</div>
+                              </div>
+                            ))}
+                          </div>
+                          {/* Accolades */}
+                          {player.accolades && (
+                            <div className="px-4 py-2 border-t border-zinc-200 dark:border-white/10">
+                              <p className="text-[11px] text-zinc-400 dark:text-white/30 italic leading-snug">{player.accolades}</p>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {reviewTab === "gamelog" && (
+                    <div className="max-w-lg mx-auto divide-y divide-zinc-100 dark:divide-white/5">
+                      {/* Regular season header */}
+                      <div className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800/60">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-white/30">
+                          Regular Season ({regularSeason.filter(g => g.won).length}-{regularSeason.filter(g => !g.won).length})
+                        </span>
+                      </div>
+                      {regularSeason.map(game => (
+                        <div key={game.gameNumber} className="flex items-center px-4 py-3 gap-3">
+                          <div className={cn(
+                            "w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-black shrink-0",
+                            game.won
+                              ? "bg-green-500/10 text-green-500 border border-green-500/20"
+                              : "bg-red-500/10 text-red-400 border border-red-500/20"
+                          )}>
+                            {game.won ? "W" : "L"}
+                          </div>
+                          <div className="w-6 text-center text-[10px] text-zinc-400 dark:text-white/20 font-bold tabular-nums shrink-0">
+                            {game.gameNumber}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm font-bold text-zinc-800 dark:text-white leading-tight truncate">
+                              vs {game.opponent}
+                            </div>
+                            {game.milestone && (
+                              <div className="text-[10px] text-gold font-bold mt-0.5">{game.milestone}</div>
+                            )}
+                          </div>
+                          <div className={cn(
+                            "text-sm font-black tabular-nums shrink-0",
+                            game.won ? "text-green-500" : "text-red-400"
+                          )}>
+                            {game.score}
+                          </div>
+                        </div>
+                      ))}
+
+                      {/* Tournament section */}
+                      {tourney.length > 0 && (
+                        <>
+                          <div className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800/60">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-white/30">
+                              NCAA Tournament ({tourney.filter(g => g.won).length}-{tourney.filter(g => !g.won).length})
+                            </span>
+                          </div>
+                          {tourney.map(game => (
+                            <div key={game.gameNumber} className="flex items-center px-4 py-3 gap-3">
+                              <div className={cn(
+                                "w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-black shrink-0",
+                                game.won
+                                  ? "bg-green-500/10 text-green-500 border border-green-500/20"
+                                  : "bg-red-500/10 text-red-400 border border-red-500/20"
+                              )}>
+                                {game.won ? "W" : "L"}
+                              </div>
+                              <div className="w-6 shrink-0" />
+                              <div className="flex-1 min-w-0">
+                                <div className="text-sm font-bold text-zinc-800 dark:text-white leading-tight truncate">
+                                  {game.opponent}
+                                </div>
+                                {game.milestone && (
+                                  <div className="text-[10px] text-gold font-bold mt-0.5">{game.milestone}</div>
+                                )}
+                              </div>
+                              <div className={cn(
+                                "text-sm font-black tabular-nums shrink-0",
+                                game.won ? "text-green-500" : "text-red-400"
+                              )}>
+                                {game.score}
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })()}
 
           {/* ── JERSEY ERA SELECT ── */}
           {phase === "jersey-era" && (

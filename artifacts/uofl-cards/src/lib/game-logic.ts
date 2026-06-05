@@ -6,6 +6,7 @@ export type GamePhase =
   | "lineup-review"
   | "simulating"
   | "results"
+  | "season-review"
   | "jersey-era"
   | "jersey-mode"
   | "jersey-quiz"
