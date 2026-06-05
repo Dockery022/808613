@@ -1,6 +1,7 @@
 {
+  "framework": null,
   "buildCommand": "pnpm --filter @workspace/uofl-cards run build",
   "outputDirectory": "artifacts/uofl-cards/dist/public",
-  "installCommand": "pnpm install",
+  "installCommand": "pnpm install --frozen-lockfile",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
