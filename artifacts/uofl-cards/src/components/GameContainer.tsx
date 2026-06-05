@@ -185,8 +185,13 @@ export function GameContainer() {
     return eraPlayers
       .filter(p => positions.includes(p.position))
       .filter(p => !search || p.name.toLowerCase().includes(search.toLowerCase()))
-      .sort((a, b) => b[sortBy] - a[sortBy]);
-  }, [eraPlayers, posFilter, search, sortBy]);
+      .sort((a, b) => {
+        const aFilled = filledPositions.includes(a.position) ? 1 : 0;
+        const bFilled = filledPositions.includes(b.position) ? 1 : 0;
+        if (aFilled !== bFilled) return aFilled - bFilled;
+        return b[sortBy] - a[sortBy];
+      });
+  }, [eraPlayers, posFilter, search, sortBy, filledPositions]);
 
   const handlePick = (player: Player) => {
     if (filledPositions.includes(player.position)) return;
