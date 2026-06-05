@@ -7,6 +7,7 @@ import {
   calculateTeamRating,
   GameResult,
   generateJerseyQuiz,
+  countPlayersForEra,
   JerseyQuestion,
 } from "@/lib/game-logic";
 import { Player, Position, ERA_LABELS } from "@/lib/data";
@@ -149,7 +150,11 @@ export function GameContainer() {
   const [quizQuestions, setQuizQuestions] = useState<JerseyQuestion[]>([]);
   const [quizIndex, setQuizIndex] = useState(0);
   const [quizScore, setQuizScore] = useState(0);
-  const [quizPicked, setQuizPicked] = useState<string | null>(null); // id of picked player
+  const [quizPicked, setQuizPicked] = useState<string | null>(null); // picked jersey number
+  const [quizAnswered, setQuizAnswered] = useState(false);
+  const [quizEra, setQuizEra] = useState<string>("all");
+  const [quizSubMode, setQuizSubMode] = useState<"multiple" | "type">("multiple");
+  const [quizTypeInput, setQuizTypeInput] = useState("");
   const [isDark, setIsDark] = useState<boolean>(() => localStorage.getItem("theme") !== "light");
 
   useEffect(() => {
@@ -196,28 +201,50 @@ export function GameContainer() {
     setSearch("");
   };
 
-  const startJerseyQuiz = () => {
-    const qs = generateJerseyQuiz(10);
+  const startJerseySetup = () => setPhase("jersey-era");
+
+  const selectJerseyEra = (era: string) => {
+    setQuizEra(era);
+    setPhase("jersey-mode");
+  };
+
+  const selectJerseyMode = (mode: "multiple" | "type") => {
+    setQuizSubMode(mode);
+    const qs = generateJerseyQuiz(quizEra, 10);
     setQuizQuestions(qs);
     setQuizIndex(0);
     setQuizScore(0);
     setQuizPicked(null);
+    setQuizTypeInput("");
+    setQuizAnswered(false);
     setPhase("jersey-quiz");
   };
 
-  const handleQuizPick = (playerId: string) => {
-    if (quizPicked) return;
-    const correct = quizQuestions[quizIndex].player.id;
-    setQuizPicked(playerId);
-    if (playerId === correct) setQuizScore(s => s + 1);
+  const handleQuizPick = (number: string) => {
+    if (quizAnswered) return;
+    const correct = quizQuestions[quizIndex].player.jerseyNumber;
+    setQuizPicked(number);
+    setQuizAnswered(true);
+    if (number === correct) setQuizScore(s => s + 1);
   };
 
-  const nextQuizQuestion = () => {
+  const handleTypeSubmit = () => {
+    if (quizAnswered || !quizTypeInput.trim()) return;
+    const correct = quizQuestions[quizIndex].player.jerseyNumber;
+    const isCorrect = quizTypeInput.trim() === correct;
+    setQuizPicked(isCorrect ? correct : "__wrong__");
+    setQuizAnswered(true);
+    if (isCorrect) setQuizScore(s => s + 1);
+  };
+
+  const advanceQuiz = () => {
     if (quizIndex + 1 >= quizQuestions.length) {
-      setPhase("jersey-results" as GamePhase);
+      setPhase("jersey-results");
     } else {
       setQuizIndex(i => i + 1);
       setQuizPicked(null);
+      setQuizTypeInput("");
+      setQuizAnswered(false);
     }
   };
 
@@ -345,24 +372,34 @@ export function GameContainer() {
                   Draft your all-time Louisville Cardinals starting five and simulate a season against college basketball's elite.
                 </p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-3xl">
                 <button
                   data-testid="button-draft-mode"
                   onClick={() => startDraft("draft")}
-                  className="group relative overflow-hidden rounded-2xl border border-cardinal/40 bg-zinc-900 p-8 text-left hover:border-cardinal hover:bg-zinc-800 transition-all duration-300 shadow-xl"
+                  className="group relative overflow-hidden rounded-2xl border border-cardinal/40 bg-zinc-900 p-6 text-left hover:border-cardinal hover:bg-zinc-800 transition-all duration-300 shadow-xl"
                 >
                   <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-cardinal/30 rounded-full blur-3xl group-hover:bg-cardinal/50 transition-all" />
-                  <h3 className="text-2xl font-bold mb-2 text-white">Draft Mode</h3>
+                  <h3 className="text-xl font-bold mb-2 text-white">Draft Mode</h3>
                   <p className="text-sm text-white/60">Build your team era by era. See stats, filter by position, and make the perfect pick.</p>
                 </button>
                 <button
                   data-testid="button-memory-mode"
                   onClick={() => startDraft("memory")}
-                  className="group relative overflow-hidden rounded-2xl border border-gold/40 bg-zinc-900 p-8 text-left hover:border-gold hover:bg-zinc-800 transition-all duration-300 shadow-xl"
+                  className="group relative overflow-hidden rounded-2xl border border-gold/40 bg-zinc-900 p-6 text-left hover:border-gold hover:bg-zinc-800 transition-all duration-300 shadow-xl"
                 >
                   <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-gold/30 rounded-full blur-3xl group-hover:bg-gold/50 transition-all" />
-                  <h3 className="text-2xl font-bold mb-2 text-gold">Memory Mode</h3>
+                  <h3 className="text-xl font-bold mb-2 text-gold">Memory Mode</h3>
                   <p className="text-sm text-white/60">True fans only. Player stats and ratings are hidden until your lineup is locked.</p>
+                </button>
+                <button
+                  data-testid="button-jersey-mode"
+                  onClick={startJerseySetup}
+                  className="group relative overflow-hidden rounded-2xl border border-white/20 bg-zinc-900 p-6 text-left hover:border-white/50 hover:bg-zinc-800 transition-all duration-300 shadow-xl"
+                >
+                  <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all" />
+                  <div className="text-2xl mb-2">#</div>
+                  <h3 className="text-xl font-bold mb-2 text-white">Jersey Guesser</h3>
+                  <p className="text-sm text-white/60">See the player — guess the number. How well do you know Cardinals history?</p>
                 </button>
               </div>
             </motion.div>
@@ -645,6 +682,305 @@ export function GameContainer() {
                         className="bg-cardinal hover:bg-red-700 text-white"
                       >
                         <Play className="w-4 h-4 mr-2" /> Play Again
+                      </Button>
+                    </div>
+                  </>
+                );
+              })()}
+            </motion.div>
+          )}
+
+          {/* ── JERSEY ERA SELECT ── */}
+          {phase === "jersey-era" && (
+            <motion.div
+              key="jersey-era"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="flex-1 flex flex-col items-center justify-center p-6 bg-white dark:bg-zinc-950 overflow-y-auto pb-20"
+            >
+              <div className="w-full max-w-lg space-y-8">
+                <div className="text-center space-y-3">
+                  <div className="inline-flex items-center gap-2 bg-cardinal/20 border border-cardinal/40 text-cardinal text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-widest">
+                    # Jersey Guesser
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-zinc-900 dark:text-white">
+                    Pick an <span className="text-cardinal">Era</span>
+                  </h2>
+                  <p className="text-zinc-500 dark:text-white/50 text-sm">Choose a coaching era or test your knowledge of all-time Cardinals.</p>
+                </div>
+                <div className="bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl overflow-hidden divide-y divide-zinc-200 dark:divide-white/10">
+                  {[
+                    { era: "all", label: "All-Time", sub: "All eras combined", color: "bg-cardinal" },
+                    { era: "1960s", label: "Early Legends", sub: "1960s", color: "bg-red-800" },
+                    { era: "1970s", label: "Crum Dynasty", sub: "1970s", color: "bg-orange-700" },
+                    { era: "1980s", label: "Crum Dynasty", sub: "1980s", color: "bg-amber-600" },
+                    { era: "1990s", label: "Crum Dynasty", sub: "1990s", color: "bg-yellow-600" },
+                    { era: "2000s", label: "Pitino Revival", sub: "2000s", color: "bg-emerald-700" },
+                    { era: "2010s", label: "Modern Era", sub: "2010s", color: "bg-blue-700" },
+                  ].map(({ era, label, sub, color }) => {
+                    const count = countPlayersForEra(era);
+                    if (count === 0) return null;
+                    return (
+                      <button
+                        key={era}
+                        onClick={() => selectJerseyEra(era)}
+                        className="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-zinc-200 dark:hover:bg-white/5 transition-colors group"
+                      >
+                        <div className={cn("w-1.5 h-10 rounded-full shrink-0", color)} />
+                        <div className="flex-1 min-w-0">
+                          <div className="font-bold text-zinc-900 dark:text-white text-sm">{label}</div>
+                          <div className="text-xs text-zinc-500 dark:text-white/40">{sub} · {count} player{count !== 1 ? "s" : ""}</div>
+                        </div>
+                        <svg className="w-4 h-4 text-zinc-400 dark:text-white/30 group-hover:text-cardinal transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    );
+                  })}
+                </div>
+                <button onClick={resetGame} className="text-sm text-zinc-400 dark:text-white/40 hover:text-zinc-600 dark:hover:text-white/70 transition-colors">
+                  ← Back to Main Menu
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* ── JERSEY MODE SELECT ── */}
+          {phase === "jersey-mode" && (
+            <motion.div
+              key="jersey-mode"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="flex-1 flex flex-col items-center justify-center p-6 bg-white dark:bg-zinc-950 pb-20"
+            >
+              <div className="w-full max-w-lg space-y-8">
+                <div className="text-center space-y-3">
+                  <div className="inline-flex items-center gap-2 bg-cardinal/20 border border-cardinal/40 text-cardinal text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-widest">
+                    # {quizEra === "all" ? "All-Time" : ERA_LABELS[quizEra] ?? quizEra}
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-zinc-900 dark:text-white">
+                    Guess the <span className="text-cardinal">Number</span>
+                  </h2>
+                  <p className="text-zinc-500 dark:text-white/50 text-sm">
+                    {countPlayersForEra(quizEra)} players available · 10 rounds
+                  </p>
+                </div>
+                <div className="bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl overflow-hidden divide-y divide-zinc-200 dark:divide-white/10">
+                  <p className="px-5 py-3 text-xs font-black uppercase tracking-widest text-zinc-400 dark:text-white/30">Choose Mode</p>
+                  <button
+                    onClick={() => selectJerseyMode("multiple")}
+                    className="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-zinc-200 dark:hover:bg-white/5 transition-colors group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-cardinal/20 border border-cardinal/40 flex items-center justify-center text-cardinal font-black text-xs shrink-0">AB</div>
+                    <div className="flex-1">
+                      <div className="font-bold text-zinc-900 dark:text-white">Multiple Choice</div>
+                      <div className="text-xs text-zinc-500 dark:text-white/40">Pick from 4 options</div>
+                    </div>
+                    <svg className="w-4 h-4 text-zinc-400 dark:text-white/30 group-hover:text-cardinal transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => selectJerseyMode("type")}
+                    className="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-zinc-200 dark:hover:bg-white/5 transition-colors group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-gold/20 border border-gold/40 flex items-center justify-center text-gold font-black text-xs shrink-0">##</div>
+                    <div className="flex-1">
+                      <div className="font-bold text-zinc-900 dark:text-white">Type It In</div>
+                      <div className="text-xs text-zinc-500 dark:text-white/40">Enter the jersey number</div>
+                    </div>
+                    <svg className="w-4 h-4 text-zinc-400 dark:text-white/30 group-hover:text-gold transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+                <button onClick={() => setPhase("jersey-era")} className="text-sm text-zinc-400 dark:text-white/40 hover:text-zinc-600 dark:hover:text-white/70 transition-colors">
+                  ← Back
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* ── JERSEY QUIZ ── */}
+          {phase === "jersey-quiz" && quizQuestions.length > 0 && (() => {
+            const q = quizQuestions[quizIndex];
+            const correct = q.player.jerseyNumber;
+            const isAnswered = quizAnswered;
+            const wasCorrect = isAnswered && quizPicked === correct;
+            return (
+              <motion.div
+                key="jersey-quiz"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex-1 flex flex-col bg-white dark:bg-zinc-950 pb-20"
+              >
+                {/* Top bar */}
+                <div className="flex items-center justify-between px-5 pt-4 pb-2 shrink-0">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-cardinal" />
+                    <span className="text-xs font-black uppercase tracking-widest text-zinc-500 dark:text-white/50">
+                      {quizEra === "all" ? "All-Time" : ERA_LABELS[quizEra] ?? quizEra}
+                    </span>
+                  </div>
+                  <span className="text-xs font-black uppercase tracking-widest text-zinc-500 dark:text-white/50">
+                    Round <span className="text-zinc-900 dark:text-white">{quizIndex + 1}</span> of {quizQuestions.length}
+                  </span>
+                </div>
+
+                {/* Progress bar */}
+                <div className="flex gap-1 px-5 pb-4 shrink-0">
+                  {quizQuestions.map((_, i) => (
+                    <div
+                      key={i}
+                      className={cn(
+                        "h-1 flex-1 rounded-full transition-colors",
+                        i < quizIndex ? "bg-cardinal" : i === quizIndex ? "bg-cardinal/60" : "bg-zinc-200 dark:bg-white/10"
+                      )}
+                    />
+                  ))}
+                </div>
+
+                {/* Score */}
+                <div className="text-center pb-4 shrink-0">
+                  <div className="text-xs font-black uppercase tracking-widest text-zinc-400 dark:text-white/40">Score</div>
+                  <div className="text-3xl font-black text-zinc-900 dark:text-white">{quizScore}</div>
+                </div>
+
+                {/* Player card */}
+                <div className="mx-5 mb-5 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl p-6 text-center shrink-0">
+                  <div className="text-xs text-zinc-400 dark:text-white/40 font-bold uppercase tracking-widest mb-2">{q.player.era}</div>
+                  <div className="text-2xl md:text-3xl font-black text-zinc-900 dark:text-white mb-1">{q.player.name}</div>
+                  <div className="text-sm font-bold text-zinc-500 dark:text-white/50">{q.player.position}</div>
+                  {isAnswered && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={cn(
+                        "mt-4 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-black",
+                        wasCorrect
+                          ? "bg-emerald-500/20 border border-emerald-500/40 text-emerald-400"
+                          : "bg-cardinal/20 border border-cardinal/40 text-cardinal"
+                      )}
+                    >
+                      {wasCorrect ? "✓ Correct!" : `✗ It was #${correct}`}
+                    </motion.div>
+                  )}
+                </div>
+
+                {/* Answer area */}
+                <div className="flex-1 flex flex-col justify-center px-5 space-y-4">
+                  {quizSubMode === "multiple" ? (
+                    <div className="grid grid-cols-2 gap-3">
+                      {q.choices.map(num => {
+                        const isCorrectChoice = num === correct;
+                        const isPicked = quizPicked === num;
+                        return (
+                          <button
+                            key={num}
+                            onClick={() => handleQuizPick(num)}
+                            disabled={isAnswered}
+                            className={cn(
+                              "rounded-xl border py-5 text-xl font-black transition-all",
+                              !isAnswered && "hover:border-cardinal hover:bg-cardinal/10 cursor-pointer",
+                              !isAnswered && "bg-zinc-100 dark:bg-zinc-900 border-zinc-200 dark:border-white/10 text-zinc-900 dark:text-white",
+                              isAnswered && isCorrectChoice && "bg-emerald-500/20 border-emerald-500/50 text-emerald-400",
+                              isAnswered && isPicked && !isCorrectChoice && "bg-cardinal/20 border-cardinal/50 text-cardinal",
+                              isAnswered && !isPicked && !isCorrectChoice && "opacity-40 bg-zinc-100 dark:bg-zinc-900 border-zinc-200 dark:border-white/10 text-zinc-400 dark:text-white/40"
+                            )}
+                          >
+                            #{num}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="flex gap-3">
+                        <input
+                          type="number"
+                          min={0}
+                          max={99}
+                          value={quizTypeInput}
+                          onChange={e => setQuizTypeInput(e.target.value)}
+                          onKeyDown={e => e.key === "Enter" && handleTypeSubmit()}
+                          disabled={isAnswered}
+                          placeholder="##"
+                          className="flex-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-xl px-5 py-4 text-2xl font-black text-center text-zinc-900 dark:text-white placeholder:text-zinc-300 dark:placeholder:text-white/20 focus:outline-none focus:border-cardinal disabled:opacity-50"
+                        />
+                        <button
+                          onClick={handleTypeSubmit}
+                          disabled={isAnswered || !quizTypeInput.trim()}
+                          className="bg-cardinal hover:bg-red-700 disabled:opacity-40 text-white font-black px-6 rounded-xl transition-colors text-sm uppercase tracking-wider"
+                        >
+                          Go
+                        </button>
+                      </div>
+                      <p className="text-center text-xs text-zinc-400 dark:text-white/30">Enter the jersey number (0–99)</p>
+                    </div>
+                  )}
+
+                  {/* Next / Skip */}
+                  {isAnswered ? (
+                    <button
+                      onClick={advanceQuiz}
+                      className="w-full bg-cardinal hover:bg-red-700 text-white font-black py-3 rounded-xl transition-colors uppercase tracking-wider text-sm"
+                    >
+                      {quizIndex + 1 >= quizQuestions.length ? "See Results →" : "Next →"}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={advanceQuiz}
+                      className="text-center text-sm text-zinc-400 dark:text-white/30 hover:text-zinc-600 dark:hover:text-white/60 transition-colors"
+                    >
+                      Skip this player →
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })()}
+
+          {/* ── JERSEY RESULTS ── */}
+          {phase === "jersey-results" && (
+            <motion.div
+              key="jersey-results"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex-1 flex flex-col items-center justify-center text-center p-6 bg-white dark:bg-zinc-950 pb-20 space-y-6"
+            >
+              {(() => {
+                const pct = quizScore / quizQuestions.length;
+                const { grade, msg } =
+                  pct === 1    ? { grade: "10/10", msg: "Perfect! You're a Cardinals legend." } :
+                  pct >= 0.8   ? { grade: `${quizScore}/10`, msg: "Diehard fan. Respect." } :
+                  pct >= 0.6   ? { grade: `${quizScore}/10`, msg: "Solid Cardinals knowledge." } :
+                  pct >= 0.4   ? { grade: `${quizScore}/10`, msg: "Not bad — keep watching!" } :
+                                 { grade: `${quizScore}/10`, msg: "Time to hit the record books." };
+                return (
+                  <>
+                    <div className="inline-flex items-center gap-2 bg-cardinal/20 border border-cardinal/40 text-cardinal text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-widest">
+                      # Jersey Guesser — {quizEra === "all" ? "All-Time" : ERA_LABELS[quizEra] ?? quizEra}
+                    </div>
+                    <div>
+                      <div className="text-7xl md:text-9xl font-black text-zinc-900 dark:text-white tracking-tighter">{grade}</div>
+                      <p className="text-xl text-gold font-bold mt-2">{msg}</p>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                      <Button
+                        onClick={() => selectJerseyMode(quizSubMode)}
+                        className="bg-cardinal hover:bg-red-700 text-white"
+                      >
+                        <RotateCcw className="w-4 h-4 mr-2" /> Play Again
+                      </Button>
+                      <Button
+                        onClick={resetGame}
+                        variant="outline"
+                        className="bg-zinc-100 border-zinc-300 hover:bg-zinc-200 dark:bg-white/5 dark:border-white/20 dark:hover:bg-white/10"
+                      >
+                        ← Main Menu
                       </Button>
                     </div>
                   </>

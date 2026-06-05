@@ -1,23 +1,44 @@
 import { PLAYERS, Player, Position, ALL_ERAS } from "./data";
 
-export type GamePhase = "mode-select" | "drafting" | "lineup-review" | "simulating" | "results" | "jersey-quiz" | "jersey-results";
+export type GamePhase =
+  | "mode-select"
+  | "drafting"
+  | "lineup-review"
+  | "simulating"
+  | "results"
+  | "jersey-era"
+  | "jersey-mode"
+  | "jersey-quiz"
+  | "jersey-results";
+
 export type GameMode = "draft" | "memory";
 
 export type JerseyQuestion = {
   player: Player;
-  choices: Player[];   // 4 total, player is one of them
+  choices: string[]; // jersey numbers (strings) for multiple choice
 };
 
-export function generateJerseyQuiz(count = 10): JerseyQuestion[] {
-  // Only players with a real jersey number
-  const pool = shuffleArray(PLAYERS.filter(p => p.jerseyNumber && p.jerseyNumber !== ""));
-  const selected = pool.slice(0, count);
+export function generateJerseyQuiz(era: string, count = 10): JerseyQuestion[] {
+  const pool = era === "all"
+    ? PLAYERS.filter(p => p.jerseyNumber && p.jerseyNumber !== "")
+    : PLAYERS.filter(p => p.era === era && p.jerseyNumber && p.jerseyNumber !== "");
+
+  const allNumbers = [...new Set(PLAYERS.map(p => p.jerseyNumber).filter(n => n && n !== ""))];
+  const selected = shuffleArray(pool).slice(0, Math.min(count, pool.length));
 
   return selected.map(player => {
-    const wrong = shuffleArray(PLAYERS.filter(p => p.id !== player.id)).slice(0, 3);
-    const choices = shuffleArray([player, ...wrong]);
+    const wrongNumbers = shuffleArray(
+      allNumbers.filter(n => n !== player.jerseyNumber)
+    ).slice(0, 3);
+    const choices = shuffleArray([player.jerseyNumber, ...wrongNumbers]);
     return { player, choices };
   });
+}
+
+export function countPlayersForEra(era: string): number {
+  return PLAYERS.filter(p =>
+    (era === "all" || p.era === era) && p.jerseyNumber && p.jerseyNumber !== ""
+  ).length;
 }
 
 export const POSITIONS: Position[] = ["PG", "SG", "SF", "PF", "C"];
