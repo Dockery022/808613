@@ -161,8 +161,8 @@ export function GameContainer() {
   };
 
   const eraPlayers = useMemo(() => {
-    return getPlayersForEra(currentEra, filledPositions, draftedIds);
-  }, [currentEra, filledPositions, draftedIds]);
+    return getPlayersForEra(currentEra, draftedIds);
+  }, [currentEra, draftedIds]);
 
   const filteredPlayers = useMemo(() => {
     const positions = POS_FILTER_MAP[posFilter];
@@ -173,6 +173,7 @@ export function GameContainer() {
   }, [eraPlayers, posFilter, search, sortBy]);
 
   const handlePick = (player: Player) => {
+    if (filledPositions.includes(player.position)) return;
     const newRoster = [...roster, player];
     const newDraftedIds = [...draftedIds, player.id];
     const newFilled = newRoster.map(p => p.position);
@@ -386,7 +387,9 @@ export function GameContainer() {
                       No players match
                     </div>
                   ) : (
-                    filteredPlayers.map((player, i) => (
+                    filteredPlayers.map((player, i) => {
+                      const positionFilled = filledPositions.includes(player.position);
+                      return (
                       <motion.button
                         key={player.id}
                         data-testid={`player-row-${player.id}`}
@@ -394,14 +397,23 @@ export function GameContainer() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.025 }}
                         onClick={() => handlePick(player)}
-                        className="group w-full flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-cardinal/10 hover:border-cardinal/30 border border-transparent transition-all text-left cursor-pointer"
+                        disabled={positionFilled}
+                        className={cn(
+                          "group w-full flex items-center gap-4 px-4 py-3 rounded-xl border border-transparent transition-all text-left",
+                          positionFilled
+                            ? "opacity-35 cursor-not-allowed"
+                            : "hover:bg-cardinal/10 hover:border-cardinal/30 cursor-pointer"
+                        )}
                       >
                         {/* Name + meta */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-white group-hover:text-cardinal transition-colors text-sm md:text-base truncate">
+                            <span className={cn("font-bold text-sm md:text-base truncate", positionFilled ? "text-white/60" : "text-white group-hover:text-cardinal transition-colors")}>
                               {player.name}
                             </span>
+                            {positionFilled && (
+                              <span className="text-[10px] font-black uppercase tracking-wider text-white/30 shrink-0">Position filled</span>
+                            )}
                           </div>
                           <div className="flex items-center gap-1.5 mt-0.5">
                             <span className="text-cardinal text-xs font-black">{player.position}</span>
@@ -429,7 +441,8 @@ export function GameContainer() {
                           <span className="text-xs text-white/20 italic hidden sm:block shrink-0">Hidden</span>
                         )}
                       </motion.button>
-                    ))
+                      );
+                    })
                   )}
                 </div>
               </div>

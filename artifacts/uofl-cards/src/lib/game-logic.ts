@@ -31,9 +31,9 @@ export function getRandomEra(filledPositions: Position[], excludedEras: string[]
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-export function getPlayersForEra(era: string, filledPositions: Position[], excludeIds: string[]): Player[] {
+export function getPlayersForEra(era: string, excludeIds: string[]): Player[] {
   return PLAYERS.filter(
-    p => p.era === era && !excludeIds.includes(p.id) && !filledPositions.includes(p.position)
+    p => p.era === era && !excludeIds.includes(p.id)
   );
 }
 
