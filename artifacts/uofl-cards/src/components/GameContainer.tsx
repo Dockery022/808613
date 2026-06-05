@@ -144,6 +144,14 @@ export function GameContainer() {
   const [simResults, setSimResults] = useState<GameResult[]>([]);
   const [isDark, setIsDark] = useState<boolean>(() => localStorage.getItem("theme") !== "light");
 
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDark]);
+
   const toggleTheme = () => {
     setIsDark(prev => {
       const next = !prev;
@@ -228,8 +236,8 @@ export function GameContainer() {
 
   return (
     <div className={cn(
-      "min-h-dvh text-white selection:bg-cardinal selection:text-white flex flex-col font-sans overflow-x-hidden pb-14",
-      isDark ? "dark bg-zinc-950" : "bg-white"
+      "min-h-dvh text-zinc-900 dark:text-white selection:bg-cardinal selection:text-white flex flex-col font-sans overflow-x-hidden pb-14",
+      isDark ? "bg-zinc-950" : "bg-white"
     )}>
 
       {/* Header */}
@@ -311,13 +319,13 @@ export function GameContainer() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex-1 flex flex-col md:flex-row h-[calc(100dvh-65px)] bg-zinc-900"
+              className="flex-1 flex flex-col md:flex-row h-[calc(100dvh-65px)] bg-white dark:bg-zinc-900"
             >
               {/* LEFT: Player list */}
-              <div className="flex flex-col flex-1 min-w-0 border-r border-white/10 overflow-hidden">
+              <div className="flex flex-col flex-1 min-w-0 border-r border-zinc-200 dark:border-white/10 overflow-hidden">
 
                 {/* Era + round strip */}
-                <div className="px-5 pt-4 pb-3 border-b border-white/10 flex items-center justify-between gap-3 shrink-0">
+                <div className="px-5 pt-4 pb-3 border-b border-zinc-200 dark:border-white/10 flex items-center justify-between gap-3 shrink-0">
                   <div className="flex items-center gap-2">
                     <span
                       className="bg-cardinal/20 text-cardinal border border-cardinal/40 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider"
@@ -325,19 +333,19 @@ export function GameContainer() {
                     >
                       {currentEra}
                     </span>
-                    <span className="text-white/50 text-sm font-bold hidden sm:inline">
+                    <span className="text-zinc-500 dark:text-white/50 text-sm font-bold hidden sm:inline">
                       {ERA_LABELS[currentEra]}
                     </span>
                   </div>
-                  <span className="text-white/30 text-xs font-bold uppercase tracking-widest shrink-0">
+                  <span className="text-zinc-400 dark:text-white/30 text-xs font-bold uppercase tracking-widest shrink-0">
                     Pick {roster.length + 1} of 5
                   </span>
                 </div>
 
                 {/* Filters row */}
-                <div className="px-5 py-3 flex items-center gap-2 border-b border-white/10 shrink-0">
+                <div className="px-5 py-3 flex items-center gap-2 border-b border-zinc-200 dark:border-white/10 shrink-0">
                   {/* Position pills */}
-                  <div className="flex items-center gap-1 bg-white/5 rounded-lg p-0.5">
+                  <div className="flex items-center gap-1 bg-zinc-100 dark:bg-white/5 rounded-lg p-0.5">
                     {(["All", "G", "F", "C"] as PosFilter[]).map(f => (
                       <button
                         key={f}
@@ -345,7 +353,7 @@ export function GameContainer() {
                         onClick={() => setPosFilter(f)}
                         className={cn(
                           "px-3 py-1.5 rounded-md text-sm font-bold transition-all",
-                          posFilter === f ? "bg-cardinal text-white" : "text-white/50 hover:text-white"
+                          posFilter === f ? "bg-cardinal text-white" : "text-zinc-500 hover:text-zinc-900 dark:text-white/50 dark:hover:text-white"
                         )}
                       >
                         {f}
@@ -355,14 +363,14 @@ export function GameContainer() {
 
                   {/* Search */}
                   <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/30" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 dark:text-white/30" />
                     <input
                       data-testid="input-search"
                       type="text"
                       placeholder="Search..."
                       value={search}
                       onChange={e => setSearch(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg pl-8 pr-3 py-1.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-white/30"
+                      className="w-full bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-lg pl-8 pr-3 py-1.5 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-white/30 focus:outline-none focus:border-zinc-400 dark:focus:border-white/30"
                     />
                   </div>
 
@@ -371,13 +379,13 @@ export function GameContainer() {
                     <button
                       data-testid="button-sort"
                       onClick={() => setSortOpen(v => !v)}
-                      className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm font-bold text-white/70 hover:text-white transition-all"
+                      className="flex items-center gap-1.5 bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-lg px-3 py-1.5 text-sm font-bold text-zinc-600 dark:text-white/70 hover:text-zinc-900 dark:hover:text-white transition-all"
                     >
                       {sortBy.toUpperCase()}
                       <ChevronDown className="w-3 h-3" />
                     </button>
                     {sortOpen && (
-                      <div className="absolute right-0 top-full mt-1 bg-[#0d1520] border border-white/10 rounded-xl shadow-2xl z-20 overflow-hidden min-w-[90px]">
+                      <div className="absolute right-0 top-full mt-1 bg-white dark:bg-[#0d1520] border border-zinc-200 dark:border-white/10 rounded-xl shadow-2xl z-20 overflow-hidden min-w-[90px]">
                         {STAT_COLS.map(s => (
                           <button
                             key={s.key}
@@ -385,7 +393,7 @@ export function GameContainer() {
                             onClick={() => { setSortBy(s.key); setSortOpen(false); }}
                             className={cn(
                               "w-full text-left px-4 py-2.5 text-sm font-bold transition-all",
-                              sortBy === s.key ? "text-white bg-cardinal/20" : "text-white/50 hover:text-white hover:bg-white/5"
+                              sortBy === s.key ? "text-cardinal bg-cardinal/10 dark:text-white dark:bg-cardinal/20" : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 dark:text-white/50 dark:hover:text-white dark:hover:bg-white/5"
                             )}
                           >
                             {s.label}
@@ -397,14 +405,14 @@ export function GameContainer() {
                 </div>
 
                 {/* Player count */}
-                <div className="px-5 py-2 text-xs text-white/30 font-medium shrink-0">
+                <div className="px-5 py-2 text-xs text-zinc-400 dark:text-white/30 font-medium shrink-0">
                   {filteredPlayers.length} player{filteredPlayers.length !== 1 ? "s" : ""} available
                 </div>
 
                 {/* Player rows */}
                 <div className="flex-1 overflow-y-auto px-3 pb-4 space-y-0.5">
                   {filteredPlayers.length === 0 ? (
-                    <div className="py-16 text-center text-white/20 font-bold uppercase tracking-wider text-sm">
+                    <div className="py-16 text-center text-zinc-400 dark:text-white/20 font-bold uppercase tracking-wider text-sm">
                       No players match
                     </div>
                   ) : (
@@ -429,17 +437,17 @@ export function GameContainer() {
                         {/* Name + meta */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <span className={cn("font-bold text-sm md:text-base truncate", positionFilled ? "text-white/60" : "text-white group-hover:text-cardinal transition-colors")}>
+                            <span className={cn("font-bold text-sm md:text-base truncate", positionFilled ? "text-zinc-400 dark:text-white/60" : "text-zinc-900 dark:text-white group-hover:text-cardinal transition-colors")}>
                               {player.name}
                             </span>
                             {positionFilled && (
-                              <span className="text-[10px] font-black uppercase tracking-wider text-white/30 shrink-0">Position filled</span>
+                              <span className="text-[10px] font-black uppercase tracking-wider text-zinc-400 dark:text-white/30 shrink-0">Position filled</span>
                             )}
                           </div>
                           <div className="flex items-center gap-1.5 mt-0.5">
                             <span className="text-cardinal text-xs font-black">{player.position}</span>
-                            <span className="text-white/20 text-xs">·</span>
-                            <span className="text-white/40 text-xs truncate">{player.eraLabel} · {player.era}</span>
+                            <span className="text-zinc-300 dark:text-white/20 text-xs">·</span>
+                            <span className="text-zinc-500 dark:text-white/40 text-xs truncate">{player.eraLabel} · {player.era}</span>
                           </div>
                         </div>
 
@@ -450,16 +458,16 @@ export function GameContainer() {
                               <div key={s.key} className="text-center w-9">
                                 <div className={cn(
                                   "text-sm font-bold tabular-nums leading-tight",
-                                  s.key === sortBy ? "text-white" : "text-white/50"
+                                  s.key === sortBy ? "text-zinc-900 dark:text-white" : "text-zinc-500 dark:text-white/50"
                                 )}>
                                   {player[s.key].toFixed(1)}
                                 </div>
-                                <div className="text-[9px] text-white/25 uppercase tracking-wider">{s.label}</div>
+                                <div className="text-[9px] text-zinc-400 dark:text-white/25 uppercase tracking-wider">{s.label}</div>
                               </div>
                             ))}
                           </div>
                         ) : (
-                          <span className="text-xs text-white/20 italic hidden sm:block shrink-0">Hidden</span>
+                          <span className="text-xs text-zinc-400 dark:text-white/20 italic hidden sm:block shrink-0">Hidden</span>
                         )}
                       </motion.button>
                       );
@@ -469,7 +477,7 @@ export function GameContainer() {
               </div>
 
               {/* RIGHT: Court diagram */}
-              <div className="hidden md:flex flex-col items-center justify-center bg-[#080e18] w-[360px] lg:w-[420px] shrink-0 p-6">
+              <div className="hidden md:flex flex-col items-center justify-center bg-gray-100 dark:bg-[#080e18] w-[360px] lg:w-[420px] shrink-0 p-6">
                 <div className="w-full aspect-[400/520] relative">
                   <CourtDiagram roster={roster} />
                 </div>
@@ -484,12 +492,12 @@ export function GameContainer() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex-1 flex flex-col items-center justify-center space-y-12 p-8 bg-zinc-900"
+              className="flex-1 flex flex-col items-center justify-center space-y-12 p-8 bg-white dark:bg-zinc-900"
             >
               <div className="text-center space-y-4">
                 <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">Your Squad is Set</h2>
-                <div className="inline-flex items-center gap-4 bg-white/5 border border-white/10 rounded-full px-6 py-3">
-                  <span className="text-white/60 font-bold uppercase tracking-wider text-sm">Team Rating</span>
+                <div className="inline-flex items-center gap-4 bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-full px-6 py-3">
+                  <span className="text-zinc-500 dark:text-white/60 font-bold uppercase tracking-wider text-sm">Team Rating</span>
                   <span className="text-3xl font-black text-gold" data-testid="text-team-rating">{calculateTeamRating(roster)}</span>
                 </div>
               </div>
@@ -527,7 +535,7 @@ export function GameContainer() {
               key="results"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="flex-1 flex flex-col items-center justify-center space-y-8 text-center p-8 bg-zinc-900"
+              className="flex-1 flex flex-col items-center justify-center space-y-8 text-center p-8 bg-white dark:bg-zinc-900"
             >
               {(() => {
                 const wins = simResults.filter(g => g.won).length;
@@ -548,7 +556,7 @@ export function GameContainer() {
                         data-testid="button-share"
                         onClick={copyResults}
                         variant="outline"
-                        className="bg-white/5 border-white/20 hover:bg-white/10"
+                        className="bg-zinc-100 border-zinc-300 hover:bg-zinc-200 dark:bg-white/5 dark:border-white/20 dark:hover:bg-white/10"
                       >
                         <Share className="w-4 h-4 mr-2" /> Share Results
                       </Button>
