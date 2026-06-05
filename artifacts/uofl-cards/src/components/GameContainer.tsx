@@ -417,7 +417,7 @@ export function GameContainer() {
                 </div>
 
                 {/* Player rows */}
-                <div className="flex-1 overflow-y-auto px-3 pb-4 space-y-0.5">
+                <div className="flex-1 overflow-y-auto px-3 pb-4 space-y-2">
                   {filteredPlayers.length === 0 ? (
                     <div className="py-16 text-center text-zinc-400 dark:text-white/20 font-bold uppercase tracking-wider text-sm">
                       No players match
@@ -435,10 +435,13 @@ export function GameContainer() {
                         onClick={() => handlePick(player)}
                         disabled={positionFilled}
                         className={cn(
-                          "group w-full flex items-center gap-4 px-4 py-3 rounded-xl border border-transparent transition-all text-left",
+                          "group w-full flex items-center gap-4 px-4 py-3 rounded-xl border text-left transition-all duration-150",
+                          "bg-white dark:bg-zinc-800/60",
+                          "border-zinc-200 dark:border-zinc-700",
+                          "shadow-[0_3px_0_0] shadow-zinc-300 dark:shadow-zinc-900",
                           positionFilled
                             ? "opacity-35 cursor-not-allowed"
-                            : "hover:bg-cardinal/10 hover:border-cardinal/30 cursor-pointer"
+                            : "cursor-pointer hover:translate-y-[-1px] hover:shadow-[0_4px_0_0] hover:shadow-cardinal/50 hover:border-cardinal/50 active:translate-y-[2px] active:shadow-none"
                         )}
                       >
                         {/* Name + meta */}
