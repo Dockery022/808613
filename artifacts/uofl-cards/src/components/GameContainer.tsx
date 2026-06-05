@@ -561,7 +561,7 @@ export function GameContainer() {
           </svg>
           <span className="text-xs font-black uppercase tracking-wider">Discord</span>
         </a>
-        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Givebutter" className="text-white/50 hover:text-[#F5A623] transition-colors flex items-center gap-1.5">
+        <a href="https://givebutter.com/the-twenty2-scholarship-campaign-guan0r" target="_blank" rel="noopener noreferrer" aria-label="Givebutter" className="text-white/50 hover:text-[#F5A623] transition-colors flex items-center gap-1.5">
           <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
             <path d="M12 21.593c-.317-.094-6.5-2.838-6.5-8.093 0-2.485 1.813-4.5 4-4.5.959 0 1.875.37 2.5.96.625-.59 1.541-.96 2.5-.96 2.187 0 4 2.015 4 4.5 0 5.255-6.183 7.999-6.5 8.093zM17 4a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
           </svg>
