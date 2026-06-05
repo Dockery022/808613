@@ -282,11 +282,13 @@ export function GameContainer() {
               className="flex-1 flex flex-col items-center justify-center text-center space-y-12 p-8 max-w-4xl mx-auto w-full"
             >
               <div className="space-y-4">
-                <img
-                  src="/logo-1912.png"
-                  alt="The 1912 Society"
-                  className="w-40 h-40 mx-auto object-contain dark:mix-blend-screen"
-                />
+                <div className="w-44 h-44 mx-auto rounded-full border-4 border-[#AD0000] bg-transparent dark:bg-white flex items-center justify-center">
+                  <img
+                    src="/logo-1912.png"
+                    alt="The 1912 Society"
+                    className="w-36 h-36 object-contain dark:mix-blend-multiply"
+                  />
+                </div>
                 <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-zinc-900 dark:text-white">
                   Can You Go <br /><span className="text-cardinal">Undefeated?</span>
                 </h2>
