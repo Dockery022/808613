@@ -285,7 +285,7 @@ export function GameContainer() {
                 <img
                   src="/logo-1912.png"
                   alt="The 1912 Society"
-                  className="w-40 h-40 mx-auto object-contain"
+                  className="w-40 h-40 mx-auto object-contain dark:mix-blend-screen"
                 />
                 <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-zinc-900 dark:text-white">
                   Can You Go <br /><span className="text-cardinal">Undefeated?</span>
