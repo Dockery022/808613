@@ -12,7 +12,7 @@ import { PlayerCard } from "@/components/PlayerCard";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
-import { RotateCcw, Share, Play, Search, ChevronDown } from "lucide-react";
+import { RotateCcw, Share, Play, Search, ChevronDown, Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type PosFilter = "All" | "G" | "F" | "C";
@@ -142,6 +142,15 @@ export function GameContainer() {
   const [sortOpen, setSortOpen] = useState(false);
 
   const [simResults, setSimResults] = useState<GameResult[]>([]);
+  const [isDark, setIsDark] = useState<boolean>(() => localStorage.getItem("theme") !== "light");
+
+  const toggleTheme = () => {
+    setIsDark(prev => {
+      const next = !prev;
+      localStorage.setItem("theme", next ? "dark" : "light");
+      return next;
+    });
+  };
   const { toast } = useToast();
 
   const filledPositions = roster.map(p => p.position);
@@ -218,26 +227,38 @@ export function GameContainer() {
   };
 
   return (
-    <div className="min-h-dvh bg-[#8b9da1] text-white selection:bg-cardinal selection:text-white flex flex-col font-sans overflow-x-hidden pb-14">
+    <div className={cn(
+      "min-h-dvh text-white selection:bg-cardinal selection:text-white flex flex-col font-sans overflow-x-hidden pb-14",
+      isDark ? "dark bg-zinc-950" : "bg-[#8b9da1]"
+    )}>
 
       {/* Header */}
-      <header className="py-4 px-6 border-b border-white/10 bg-[#8b9da1]/80 backdrop-blur-md sticky top-0 z-50 flex justify-between items-center">
+      <header className="py-4 px-6 border-b border-white/10 bg-[#8b9da1]/80 dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-50 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <h1 className="font-black text-xl tracking-tighter uppercase text-white">
             Cardinal <span className="text-cardinal">Basketball</span>
           </h1>
         </div>
-        {phase !== "mode-select" && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={resetGame}
-            data-testid="button-restart"
-            className="text-white/60 hover:text-white"
+        <div className="flex items-center gap-2">
+          {phase !== "mode-select" && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={resetGame}
+              data-testid="button-restart"
+              className="text-white/60 hover:text-white"
+            >
+              <RotateCcw className="w-4 h-4 mr-2" /> Restart
+            </Button>
+          )}
+          <button
+            onClick={toggleTheme}
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            className="p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors"
           >
-            <RotateCcw className="w-4 h-4 mr-2" /> Restart
-          </Button>
-        )}
+            {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
+        </div>
       </header>
 
       <main className="flex-1 flex flex-col w-full relative">
@@ -290,7 +311,7 @@ export function GameContainer() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex-1 flex flex-col md:flex-row h-[calc(100dvh-65px)]"
+              className="flex-1 flex flex-col md:flex-row h-[calc(100dvh-65px)] bg-zinc-900"
             >
               {/* LEFT: Player list */}
               <div className="flex flex-col flex-1 min-w-0 border-r border-white/10 overflow-hidden">
@@ -463,7 +484,7 @@ export function GameContainer() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex-1 flex flex-col items-center justify-center space-y-12 p-8"
+              className="flex-1 flex flex-col items-center justify-center space-y-12 p-8 bg-zinc-900"
             >
               <div className="text-center space-y-4">
                 <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">Your Squad is Set</h2>
@@ -506,7 +527,7 @@ export function GameContainer() {
               key="results"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="flex-1 flex flex-col items-center justify-center space-y-8 text-center p-8"
+              className="flex-1 flex flex-col items-center justify-center space-y-8 text-center p-8 bg-zinc-900"
             >
               {(() => {
                 const wins = simResults.filter(g => g.won).length;
