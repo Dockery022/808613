@@ -222,9 +222,8 @@ export function GameContainer() {
       {/* Header */}
       <header className="py-4 px-6 border-b border-white/10 bg-zinc-900/80 backdrop-blur-md sticky top-0 z-50 flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <img src="/cardinal-logo.png" alt="Cardinals" className="w-9 h-9 object-contain" />
           <h1 className="font-black text-xl tracking-tighter uppercase text-white">
-            UofL <span className="text-cardinal">Cards</span>
+            Cardinal <span className="text-cardinal">Basketball</span>
           </h1>
         </div>
         {phase !== "mode-select" && (
