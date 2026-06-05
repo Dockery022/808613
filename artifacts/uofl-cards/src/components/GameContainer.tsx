@@ -296,7 +296,7 @@ export function GameContainer() {
                   className="group relative overflow-hidden rounded-2xl border border-cardinal/40 bg-zinc-900 p-8 text-left hover:border-cardinal hover:bg-zinc-800 transition-all duration-300 shadow-xl"
                 >
                   <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-cardinal/30 rounded-full blur-3xl group-hover:bg-cardinal/50 transition-all" />
-                  <h3 className="text-2xl font-bold mb-2">Draft Mode</h3>
+                  <h3 className="text-2xl font-bold mb-2 text-white">Draft Mode</h3>
                   <p className="text-sm text-white/60">Build your team era by era. See stats, filter by position, and make the perfect pick.</p>
                 </button>
                 <button
