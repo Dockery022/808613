@@ -264,18 +264,18 @@ export function GameContainer() {
                 <button
                   data-testid="button-draft-mode"
                   onClick={() => startDraft("draft")}
-                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-8 text-left hover:border-cardinal hover:bg-cardinal/10 transition-all duration-500"
+                  className="group relative overflow-hidden rounded-2xl border border-cardinal/40 bg-zinc-900 p-8 text-left hover:border-cardinal hover:bg-zinc-800 transition-all duration-300 shadow-xl"
                 >
-                  <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-cardinal/20 rounded-full blur-3xl group-hover:bg-cardinal/40 transition-all" />
+                  <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-cardinal/30 rounded-full blur-3xl group-hover:bg-cardinal/50 transition-all" />
                   <h3 className="text-2xl font-bold mb-2">Draft Mode</h3>
                   <p className="text-sm text-white/60">Build your team era by era. See stats, filter by position, and make the perfect pick.</p>
                 </button>
                 <button
                   data-testid="button-memory-mode"
                   onClick={() => startDraft("memory")}
-                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-8 text-left hover:border-gold hover:bg-gold/10 transition-all duration-500"
+                  className="group relative overflow-hidden rounded-2xl border border-gold/40 bg-zinc-900 p-8 text-left hover:border-gold hover:bg-zinc-800 transition-all duration-300 shadow-xl"
                 >
-                  <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-gold/20 rounded-full blur-3xl group-hover:bg-gold/40 transition-all" />
+                  <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-gold/30 rounded-full blur-3xl group-hover:bg-gold/50 transition-all" />
                   <h3 className="text-2xl font-bold mb-2 text-gold">Memory Mode</h3>
                   <p className="text-sm text-white/60">True fans only. Player stats and ratings are hidden until your lineup is locked.</p>
                 </button>
