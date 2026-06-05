@@ -107,17 +107,16 @@ function CourtDiagram({ roster }: { roster: Player[] }) {
                 animate={{ scale: 1, opacity: 1 }}
                 className="flex flex-col items-center gap-1"
               >
-                <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-cardinal border-2 border-cardinal shadow-[0_0_20px_rgba(173,0,0,0.5)] flex flex-col items-center justify-center">
-                  <span className="text-[10px] font-black text-white/60 uppercase tracking-wider">{pos}</span>
-                  <span className="text-sm md:text-base font-black text-white leading-tight text-center px-1 line-clamp-2">
+                <div className="w-10 h-10 md:w-20 md:h-20 rounded-lg md:rounded-xl bg-cardinal border-2 border-cardinal shadow-[0_0_20px_rgba(173,0,0,0.5)] flex flex-col items-center justify-center">
+                  <span className="text-[8px] md:text-[10px] font-black text-white/60 uppercase tracking-wider">{pos}</span>
+                  <span className="text-[9px] md:text-base font-black text-white leading-tight text-center px-0.5 line-clamp-2">
                     {player.name.split(" ").slice(-1)[0]}
                   </span>
                 </div>
-                <span className="text-[9px] text-white/50 font-bold uppercase tracking-wider">{player.era}</span>
               </motion.div>
             ) : (
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl border-2 border-dashed border-white/20 flex flex-col items-center justify-center bg-white/3">
-                <span className="text-white/40 font-black text-base md:text-lg">{pos}</span>
+              <div className="w-10 h-10 md:w-20 md:h-20 rounded-lg md:rounded-xl border-2 border-dashed border-white/20 flex flex-col items-center justify-center bg-white/3">
+                <span className="text-white/40 font-black text-xs md:text-lg">{pos}</span>
               </div>
             )}
           </motion.div>
@@ -487,10 +486,11 @@ export function GameContainer() {
               </div>
 
               {/* Court diagram — always visible; stacks above player list on mobile */}
-              <div className="flex order-first md:order-last flex-col items-center justify-center bg-gray-100 dark:bg-[#080e18] shrink-0
-                              h-44 w-full border-b border-zinc-200 dark:border-white/10 p-3
-                              md:h-auto md:w-[360px] lg:md:w-[420px] md:border-b-0 md:border-l md:p-6">
-                <div className="h-full w-auto md:w-full aspect-[400/520] relative">
+              <div className="flex order-first md:order-last items-center justify-center bg-gray-100 dark:bg-[#080e18] shrink-0
+                              w-full border-b border-zinc-200 dark:border-white/10 p-3
+                              md:w-[360px] lg:w-[420px] md:border-b-0 md:border-l md:p-6 md:items-start">
+                {/* aspect-ratio wrapper: width drives height to keep court proportions */}
+                <div className="relative w-[130px] md:w-full aspect-[400/520]">
                   <CourtDiagram roster={roster} />
                 </div>
               </div>
