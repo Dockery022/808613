@@ -1012,6 +1012,7 @@ export function GameContainer() {
                 <div className="bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl overflow-hidden divide-y divide-zinc-200 dark:divide-white/10">
                   {[
                     { era: "all", label: "All-Time", sub: "All eras combined", color: "bg-cardinal" },
+                    { era: "hickman", label: "The Hickman Era",  sub: "Peck Hickman · 1944–1967",     color: "bg-stone-700" },
                     { era: "early",  label: "The Dromo Era",    sub: "John Dromo · 1967–1971",       color: "bg-red-800" },
                     { era: "crum",   label: "The Crum Dynasty", sub: "Denny Crum · 1971–2001",        color: "bg-amber-600" },
                     { era: "pitino", label: "The Pitino Era",   sub: "Rick Pitino · 2001–2018",       color: "bg-emerald-700" },

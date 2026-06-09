@@ -17,13 +17,14 @@ export type Player = {
 }
 
 export const ERA_LABELS: Record<string, string> = {
-  "early":  "The Dromo Era",
-  "crum":   "The Crum Dynasty",
-  "pitino": "The Pitino Era",
-  "modern": "The Modern Era",
+  "hickman": "The Hickman Era",
+  "early":   "The Dromo Era",
+  "crum":    "The Crum Dynasty",
+  "pitino":  "The Pitino Era",
+  "modern":  "The Modern Era",
 };
 
-export const ALL_ERAS = ["early", "crum", "pitino", "modern"];
+export const ALL_ERAS = ["hickman", "early", "crum", "pitino", "modern"];
 
 // Stats sourced from sports-reference.com/cbb — career per-game averages at Louisville.
 // Pre-1973 steals/blocks were not officially tracked; those are set to 0.0.
@@ -34,8 +35,8 @@ export const PLAYERS: Player[] = [
   {
     id: "w-unseld",
     name: "Wes Unseld",
-    era: "early",
-    eraLabel: "The Dromo Era",
+    era: "hickman",
+    eraLabel: "The Hickman Era",
     position: "C",
     jerseyNumber: "31",
     ppg: 20.6,
@@ -94,8 +95,8 @@ export const PLAYERS: Player[] = [
   {
     id: "w-houston",
     name: "Wade Houston",
-    era: "early",
-    eraLabel: "The Dromo Era",
+    era: "hickman",
+    eraLabel: "The Hickman Era",
     position: "SF",
     jerseyNumber: "43",
     ppg: 13.5,
@@ -109,8 +110,8 @@ export const PLAYERS: Player[] = [
   {
     id: "b-olsen",
     name: "Bud Olsen",
-    era: "early",
-    eraLabel: "The Dromo Era",
+    era: "hickman",
+    eraLabel: "The Hickman Era",
     position: "C",
     jerseyNumber: "41",
     ppg: 13.0,
