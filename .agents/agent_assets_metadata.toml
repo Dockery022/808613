@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "6rsFcWqjIKl8R1EcURWfb"
+uri = "file://uofl-jersey-numbers.xlsx"
+type = "table"
+title = "UofL Jersey Numbers — All 121 Players"
