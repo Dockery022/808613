@@ -6,3 +6,9 @@ id = "6rsFcWqjIKl8R1EcURWfb"
 uri = "file://uofl-jersey-numbers.xlsx"
 type = "table"
 title = "UofL Jersey Numbers — All 121 Players"
+
+[[outputs]]
+id = "IJhn0_tKygg8Y64l9LNeD"
+uri = "file://uofl-jersey-numbers.csv"
+type = "table"
+title = "UofL Jersey Numbers — All 121 Players (CSV)"
