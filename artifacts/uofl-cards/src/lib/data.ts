@@ -2044,8 +2044,8 @@ export const PLAYERS: Player[] = [
   {
     id: "c-cunningham",
     name: "Christen Cunningham",
-    era: "pitino",
-    eraLabel: "The Pitino Era",
+    era: "modern",
+    eraLabel: "The Modern Era",
     position: "PG",
     jerseyNumber: "1",
     ppg: 8.2,
