@@ -927,7 +927,7 @@ export const PLAYERS: Player[] = [
     era: "crum",
     eraLabel: "The Crum Dynasty",
     position: "PG",
-    jerseyNumber: "3",
+    jerseyNumber: "00",
     ppg: 5.5,
     rpg: 2.0,
     apg: 2.5,
