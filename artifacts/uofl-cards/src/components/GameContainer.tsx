@@ -1015,8 +1015,8 @@ export function GameContainer() {
                     { era: "hickman", label: "The Hickman Era",  sub: "Peck Hickman · 1944–1967",     color: "bg-stone-700" },
                     { era: "early",  label: "The Dromo Era",    sub: "John Dromo · 1967–1971",       color: "bg-red-800" },
                     { era: "crum",   label: "The Crum Dynasty", sub: "Denny Crum · 1971–2001",        color: "bg-amber-600" },
-                    { era: "pitino", label: "The Pitino Era",   sub: "Rick Pitino · 2001–2017",       color: "bg-emerald-700" },
-                    { era: "modern", label: "The Modern Era",   sub: "Padgett / Mack / Payne / Kelsey · 2017–present", color: "bg-blue-700" },
+                    { era: "pitino", label: "The Pitino Era",   sub: "Rick Pitino · 2001–2018",       color: "bg-emerald-700" },
+                    { era: "modern", label: "The Modern Era",   sub: "Mack / Payne / Kelsey · 2018–present", color: "bg-blue-700" },
                   ].map(({ era, label, sub, color }) => {
                     const count = countPlayersForEra(era);
                     if (count === 0) return null;
