@@ -2059,8 +2059,8 @@ export const PLAYERS: Player[] = [
   {
     id: "d-sutton",
     name: "Dwayne Sutton",
-    era: "pitino",
-    eraLabel: "The Pitino Era",
+    era: "modern",
+    eraLabel: "The Modern Era",
     position: "SF",
     jerseyNumber: "24",
     ppg: 5.8,
