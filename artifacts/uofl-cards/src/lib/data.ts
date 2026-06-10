@@ -1695,8 +1695,8 @@ export const PLAYERS: Player[] = [
   {
     id: "d-adel",
     name: "Deng Adel",
-    era: "pitino",
-    eraLabel: "The Pitino Era",
+    era: "modern",
+    eraLabel: "The Modern Era",
     position: "SF",
     jerseyNumber: "22",
     ppg: 11.2,
@@ -1710,8 +1710,8 @@ export const PLAYERS: Player[] = [
   {
     id: "q-snider",
     name: "Quentin Snider",
-    era: "pitino",
-    eraLabel: "The Pitino Era",
+    era: "modern",
+    eraLabel: "The Modern Era",
     position: "PG",
     jerseyNumber: "4",
     ppg: 9.2,
@@ -1725,8 +1725,8 @@ export const PLAYERS: Player[] = [
   {
     id: "r-spalding",
     name: "Raymond Spalding",
-    era: "pitino",
-    eraLabel: "The Pitino Era",
+    era: "modern",
+    eraLabel: "The Modern Era",
     position: "PF",
     jerseyNumber: "13",
     ppg: 8.1,
@@ -1785,8 +1785,8 @@ export const PLAYERS: Player[] = [
   {
     id: "v-king",
     name: "V.J. King",
-    era: "pitino",
-    eraLabel: "The Pitino Era",
+    era: "modern",
+    eraLabel: "The Modern Era",
     position: "SF",
     jerseyNumber: "0",
     ppg: 7.5,
